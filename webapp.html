@@ -69,15 +69,160 @@
             opacity: 0.8;
         }
 
-        .button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         .button.secondary {
             background: var(--tg-theme-secondary-bg-color, #f7f7f7);
             color: var(--tg-theme-text-color, #000000);
             border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .character-card {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .character-portrait {
+            flex-shrink: 0;
+        }
+
+        .character-portrait img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid var(--tg-theme-button-color, #0088cc);
+            object-fit: cover;
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+        }
+
+        .character-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            border-radius: 8px;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            font-size: 16px;
+        }
+
+        .gender-selector {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            background: var(--tg-theme-bg-color, #ffffff);
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover {
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+        }
+
+        .radio-option input[type="radio"] {
+            margin: 0;
+        }
+
+        .info-button {
+            background: var(--tg-theme-button-color, #0088cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #666666);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
         }
 
         .dice-container {
@@ -121,83 +266,6 @@
             50% { transform: rotateY(180deg); }
         }
 
-        .character-form {
-            display: none;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 500;
-            color: var(--tg-theme-text-color, #000000);
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
-            border-radius: 8px;
-            background: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
-            font-size: 16px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 16px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 12px;
-            background: var(--tg-theme-section-bg-color, #f0f0f0);
-            border-radius: 8px;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--tg-theme-hint-color, #666666);
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--tg-theme-text-color, #000000);
-        }
-
-        .resources {
-            display: flex;
-            gap: 16px;
-            margin: 16px 0;
-        }
-
-        .resource {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            background: var(--tg-theme-section-bg-color, #f0f0f0);
-            border-radius: 8px;
-        }
-
-        .resource.fear {
-            border: 2px solid #F44336;
-        }
-
-        .resource.hope {
-            border: 2px solid #4CAF50;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
         .roll-result {
             text-align: center;
             padding: 20px;
@@ -231,7 +299,7 @@
         <div id="main-menu">
             <div class="header">
                 <div class="title">⚔️ Daggerheart</div>
-                <div class="subtitle">Настольная ролевая игра</div>
+                <div class="subtitle">Мобильная ролевая игра</div>
             </div>
 
             <div class="card">
@@ -248,28 +316,71 @@
         </div>
 
         <!-- Создание персонажа -->
-        <div id="character-creation" class="character-form">
+        <div id="character-creation" class="hidden">
             <div class="header">
                 <div class="title">🎭 Создание персонажа</div>
             </div>
 
             <div class="card">
-                <div class="form-group">
-                    <label class="form-label">Имя персонажа</label>
-                    <input type="text" class="form-input" id="char-name" placeholder="Введите имя">
-                </div>
+                <!-- Карточка персонажа -->
+                <div class="character-card">
+                    <div class="character-portrait">
+                        <img id="char-portrait" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgdmlld0JveD0iMCAwIDExMCAxMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMTAiIGhlaWdodD0iMTEwIiByeD0iNTUiIGZpbGw9IiNGNUY1RjUiLz4KPHN2ZyB4PSIzMCIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI2MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyMCIgcj0iMTIiIGZpbGw9IiNEREQiLz4KICA8ZWxsaXBzZSBjeD0iMjUiIGN5PSI0NSIgcng9IjE4IiByeT0iMjAiIGZpbGw9IiNEREQiLz4KPC9zdmc+Cjwvc3ZnPg==" alt="Портрет персонажа">
+                    </div>
+                    <div class="character-info">
+                        <div class="form-group">
+                            <label class="form-label">Имя персонажа</label>
+                            <input type="text" class="form-input" id="char-name" placeholder="Введите имя" onchange="updatePortrait()">
+                        </div>
 
-                <div class="form-group">
-                    <label class="form-label">Родословная</label>
-                    <select class="form-select" id="char-ancestry">
-                        <option value="">Выберите родословную</option>
-                        <option value="human">Человек</option>
-                        <option value="elf">Эльф</option>
-                        <option value="dwarf">Дварф</option>
-                        <option value="halfling">Полурослик</option>
-                        <option value="orc">Орк</option>
-                        <option value="faerie">Фея</option>
-                    </select>
+                        <div class="form-group">
+                            <label class="form-label">Гендер</label>
+                            <div class="gender-selector">
+                                <label class="radio-option">
+                                    <input type="radio" name="gender" value="male" checked onchange="updatePortrait()">
+                                    <span>👨 Мужской</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="gender" value="female" onchange="updatePortrait()">
+                                    <span>👩 Женский</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Родословная 
+                                <button class="info-button" onclick="showAncestryInfo()" title="Информация о родословной">?</button>
+                            </label>
+                            <select class="form-select" id="char-ancestry" onchange="updatePortrait()">
+                                <option value="">Выберите родословную</option>
+                                <option value="akvan">Акван</option>
+                                <option value="aeris">Аэрис</option>
+                                <option value="giant">Великан</option>
+                                <option value="galapa">Галапа</option>
+                                <option value="gnome">Гном</option>
+                                <option value="goblin">Гоблин</option>
+                                <option value="dwarf">Дварф</option>
+                                <option value="dragonid">Драконид</option>
+                                <option value="ignis">Игнис</option>
+                                <option value="infernis">Инфернис</option>
+                                <option value="katari">Катари</option>
+                                <option value="clank">Кланк</option>
+                                <option value="orc">Орк</option>
+                                <option value="halfling">Полурослик</option>
+                                <option value="ribbet">Риббет</option>
+                                <option value="simian">Симиан</option>
+                                <option value="terran">Терран</option>
+                                <option value="faun">Фавн</option>
+                                <option value="fangril">Фангрил</option>
+                                <option value="faerie">Фейри</option>
+                                <option value="firbolg">Фирболг</option>
+                                <option value="human">Человек</option>
+                                <option value="elf">Эльф</option>
+                                <option value="etheris">Эфирис</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -291,23 +402,23 @@
                         <input type="number" class="stat-value" id="strength" value="0" min="-3" max="3">
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Проворность</div>
+                        <div class="stat-label">Ловкость</div>
                         <input type="number" class="stat-value" id="agility" value="0" min="-3" max="3">
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Искусность</div>
+                        <div class="stat-label">Грация</div>
                         <input type="number" class="stat-value" id="finesse" value="0" min="-3" max="3">
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Инстинкт</div>
+                        <div class="stat-label">Интуиция</div>
                         <input type="number" class="stat-value" id="instinct" value="0" min="-3" max="3">
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Влияние</div>
+                        <div class="stat-label">Харизма</div>
                         <input type="number" class="stat-value" id="presence" value="0" min="-3" max="3">
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Знание</div>
+                        <div class="stat-label">Интеллект</div>
                         <input type="number" class="stat-value" id="knowledge" value="0" min="-3" max="3">
                     </div>
                 </div>
@@ -343,11 +454,11 @@
                     <select class="form-select" id="trait-modifier">
                         <option value="0">Без модификатора</option>
                         <option value="strength">Сила</option>
-                        <option value="agility">Проворность</option>
-                        <option value="finesse">Искусность</option>
-                        <option value="instinct">Инстинкт</option>
-                        <option value="presence">Влияние</option>
-                        <option value="knowledge">Знание</option>
+                        <option value="agility">Ловкость</option>
+                        <option value="finesse">Грация</option>
+                        <option value="instinct">Интуиция</option>
+                        <option value="presence">Харизма</option>
+                        <option value="knowledge">Интеллект</option>
                     </select>
                 </div>
 
@@ -373,154 +484,251 @@
             </div>
         </div>
 
-        <!-- Состояние сессии -->
         <div id="session-state" class="hidden">
             <div class="header">
                 <div class="title">📊 Состояние сессии</div>
             </div>
 
-            <div class="resources">
-                <div class="resource fear">
-                    <div class="stat-label">💀 Страх</div>
-                    <div class="stat-value" id="session-fear">0</div>
-                </div>
-                <div class="resource hope">
-                    <div class="stat-label">✨ Надежда</div>
-                    <div class="stat-value" id="session-hope">0</div>
-                </div>
-            </div>
-
             <div class="card">
-                <div class="form-label">👤 Мой персонаж</div>
-                <div id="character-info">
-                    <p>Персонаж не создан</p>
+                <div class="form-group">
+                    <label class="form-label">💀 Страх: <span id="session-fear">0</span></label>
+                    <label class="form-label">✨ Надежда: <span id="session-hope">0</span></label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">👤 Мой персонаж</label>
+                    <div id="character-info">
+                        <p>Персонаж не создан</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🌍 Текущая сцена</label>
+                    <div id="current-scene">
+                        <p>Сцена не установлена</p>
+                    </div>
+                </div>
+
+                <button class="button secondary" onclick="showMainMenu()">← Назад</button>
+            </div>
+        </div>
+
+        <!-- Модальное окно -->
+        <div id="ancestry-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="modal-ancestry-title">Информация о родословной</div>
+                    <button class="close-button" onclick="closeAncestryModal()">&times;</button>
+                </div>
+                <div id="modal-ancestry-description">
+                    Выберите родословную для просмотра информации.
                 </div>
             </div>
-
-            <div class="card">
-                <div class="form-label">🌍 Текущая сцена</div>
-                <div id="current-scene">
-                    <p>Сцена не установлена</p>
-                </div>
-            </div>
-
-            <button class="button secondary" onclick="showMainMenu()">
-                ← Назад
-            </button>
         </div>
     </div>
 
     <script>
-        // Инициализация Telegram Web App
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-
-        // Применяем тему Telegram
-        document.documentElement.style.setProperty('--tg-color-scheme', tg.colorScheme);
-
         // Глобальные переменные
-        let currentCharacter = null;
-        let sessionData = {
+        var currentCharacter = null;
+        var sessionData = {
             fear: 0,
             hope: 0,
             scene: '',
             players: []
         };
 
+        // Данные о родословных (заглушки для описаний)
+        var ancestryData = {
+            akvan: { 
+                name: "Акван", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_АКВАН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            aeris: { 
+                name: "Аэрис", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_АЭРИС - Замените это описание на реальное из правил Daggerheart" 
+            },
+            giant: { 
+                name: "Великан", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ВЕЛИКАН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            galapa: { 
+                name: "Галапа", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ГАЛАПА - Замените это описание на реальное из правил Daggerheart" 
+            },
+            gnome: { 
+                name: "Гном", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ГНОМ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            goblin: { 
+                name: "Гоблин", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ГОБЛИН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            dwarf: { 
+                name: "Дварф", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ДВАРФ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            dragonid: { 
+                name: "Драконид", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ДРАКОНИД - Замените это описание на реальное из правил Daggerheart" 
+            },
+            ignis: { 
+                name: "Игнис", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ИГНИС - Замените это описание на реальное из правил Daggerheart" 
+            },
+            infernis: { 
+                name: "Инфернис", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ИНФЕРНИС - Замените это описание на реальное из правил Daggerheart" 
+            },
+            katari: { 
+                name: "Катари", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_КАТАРИ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            clank: { 
+                name: "Кланк", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_КЛАНК - Замените это описание на реальное из правил Daggerheart" 
+            },
+            orc: { 
+                name: "Орк", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ОРК - Замените это описание на реальное из правил Daggerheart" 
+            },
+            halfling: { 
+                name: "Полурослик", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ПОЛУРОСЛИК - Замените это описание на реальное из правил Daggerheart" 
+            },
+            ribbet: { 
+                name: "Риббет", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_РИББЕТ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            simian: { 
+                name: "Симиан", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_СИМИАН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            terran: { 
+                name: "Терран", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ТЕРРАН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            faun: { 
+                name: "Фавн", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ФАВН - Замените это описание на реальное из правил Daggerheart" 
+            },
+            fangril: { 
+                name: "Фангрил", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ФАНГРИЛ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            faerie: { 
+                name: "Фейри", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ФЕЙРИ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            firbolg: { 
+                name: "Фирболг", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ФИРБОЛГ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            human: { 
+                name: "Человек", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ЧЕЛОВЕК - Замените это описание на реальное из правил Daggerheart" 
+            },
+            elf: { 
+                name: "Эльф", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ЭЛЬФ - Замените это описание на реальное из правил Daggerheart" 
+            },
+            etheris: { 
+                name: "Эфирис", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ЭФИРИС - Замените это описание на реальное из правил Daggerheart" 
+            }
+        };
+        
         // Функции навигации
         function showMainMenu() {
             hideAllScreens();
             document.getElementById('main-menu').classList.remove('hidden');
-            tg.MainButton.hide();
         }
 
         function showCharacterCreation() {
             hideAllScreens();
             document.getElementById('character-creation').classList.remove('hidden');
-            tg.MainButton.hide();
         }
 
         function showDiceRoll() {
             hideAllScreens();
             document.getElementById('dice-roll').classList.remove('hidden');
-            tg.MainButton.hide();
         }
 
         function showSession() {
             hideAllScreens();
             document.getElementById('session-state').classList.remove('hidden');
             loadSessionData();
-            tg.MainButton.hide();
         }
 
         function hideAllScreens() {
-            const screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state'];
-            screens.forEach(screen => {
-                document.getElementById(screen).classList.add('hidden');
-            });
+            var screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state'];
+            for (var i = 0; i < screens.length; i++) {
+                document.getElementById(screens[i]).classList.add('hidden');
+            }
         }
 
-        // Создание персонажа
+        // Функции персонажа
+        function updatePortrait() {
+            var ancestry = document.getElementById('char-ancestry').value;
+            var genderRadios = document.getElementsByName('gender');
+            var gender = 'male';
+            
+            for (var i = 0; i < genderRadios.length; i++) {
+                if (genderRadios[i].checked) {
+                    gender = genderRadios[i].value;
+                    break;
+                }
+            }
+
+            var portraitImg = document.getElementById('char-portrait');
+            
+            if (ancestry && portraitImg) {
+                var portraitPath = './images/portraits/' + ancestry + '_' + gender + '.png';
+                portraitImg.src = portraitPath;
+            }
+        }
+
         function saveCharacter() {
-            const name = document.getElementById('char-name').value;
-            const ancestry = document.getElementById('char-ancestry').value;
-            const charClass = document.getElementById('char-class').value;
+            var name = document.getElementById('char-name').value;
+            var ancestry = document.getElementById('char-ancestry').value;
+            var charClass = document.getElementById('char-class').value;
 
             if (!name || !ancestry || !charClass) {
-                tg.showAlert('Пожалуйста, заполните все обязательные поля!');
+                alert('Пожалуйста, заполните все обязательные поля!');
                 return;
             }
 
-            const character = {
-                name: name,
-                ancestry: ancestry,
-                class: charClass,
-                traits: {
-                    strength: parseInt(document.getElementById('strength').value),
-                    agility: parseInt(document.getElementById('agility').value),
-                    finesse: parseInt(document.getElementById('finesse').value),
-                    instinct: parseInt(document.getElementById('instinct').value),
-                    presence: parseInt(document.getElementById('presence').value),
-                    knowledge: parseInt(document.getElementById('knowledge').value)
-                },
-                hit_points: 20,
-                max_hit_points: 20,
-                stress: 0,
-                armor_slots: 3
-            };
-
-            currentCharacter = character;
-
+            alert('Персонаж создан успешно!');
+            
             // Сохраняем в локальное хранилище
             if (typeof(Storage) !== "undefined") {
-                localStorage.setItem('daggerheart_character', JSON.stringify(character));
+                localStorage.setItem('daggerheart_character', JSON.stringify({
+                    name: name,
+                    ancestry: ancestry,
+                    gender: gender,
+                    class: charClass,
+                    hit_points: 20,
+                    max_hit_points: 20,
+                    stress: 0
+                }));
             }
-
-            // Отправляем данные боту
-            tg.sendData(JSON.stringify({
-                type: 'character_created',
-                character: character
-            }));
-
-            tg.showAlert('Персонаж создан успешно!');
+            
             showMainMenu();
         }
 
         // Система бросков кубиков
         function rollDice() {
-            const rollButton = document.getElementById('roll-button');
-            const hopeDice = document.getElementById('hope-dice');
-            const fearDice = document.getElementById('fear-dice');
-            const resultDiv = document.getElementById('roll-result');
+            var rollButton = document.getElementById('roll-button');
+            var hopeDice = document.getElementById('hope-dice');
+            var fearDice = document.getElementById('fear-dice');
+            var resultDiv = document.getElementById('roll-result');
 
             rollButton.disabled = true;
             hopeDice.classList.add('rolling');
             fearDice.classList.add('rolling');
 
             // Симулируем анимацию броска
-            let rollCount = 0;
-            const rollInterval = setInterval(() => {
+            var rollCount = 0;
+            var rollInterval = setInterval(function() {
                 hopeDice.textContent = Math.floor(Math.random() * 12) + 1;
                 fearDice.textContent = Math.floor(Math.random() * 12) + 1;
                 rollCount++;
@@ -533,14 +741,14 @@
         }
 
         function finishRoll() {
-            const hopeDice = document.getElementById('hope-dice');
-            const fearDice = document.getElementById('fear-dice');
-            const resultDiv = document.getElementById('roll-result');
-            const rollButton = document.getElementById('roll-button');
+            var hopeDice = document.getElementById('hope-dice');
+            var fearDice = document.getElementById('fear-dice');
+            var resultDiv = document.getElementById('roll-result');
+            var rollButton = document.getElementById('roll-button');
 
             // Финальный бросок
-            const hopeRoll = Math.floor(Math.random() * 12) + 1;
-            const fearRoll = Math.floor(Math.random() * 12) + 1;
+            var hopeRoll = Math.floor(Math.random() * 12) + 1;
+            var fearRoll = Math.floor(Math.random() * 12) + 1;
 
             hopeDice.textContent = hopeRoll;
             fearDice.textContent = fearRoll;
@@ -549,79 +757,79 @@
             fearDice.classList.remove('rolling');
 
             // Определяем результат
-            const difficulty = parseInt(document.getElementById('difficulty').value);
-            const traitMod = getTraitModifier();
-            const total = Math.max(hopeRoll, fearRoll) + traitMod;
+            var difficulty = parseInt(document.getElementById('difficulty').value);
+            var traitMod = getTraitModifier();
+            var total = Math.max(hopeRoll, fearRoll) + traitMod;
 
-            let resultText = '';
-            let resultClass = '';
+            var resultText = '';
+            var resultClass = '';
 
             // Проверяем критический успех
             if (hopeRoll === fearRoll) {
-                resultText = `🌟 КРИТИЧЕСКИЙ УСПЕХ! (${hopeRoll}/${fearRoll} + ${traitMod} = ${total})`;
+                resultText = '🌟 КРИТИЧЕСКИЙ УСПЕХ! (' + hopeRoll + '/' + fearRoll + ' + ' + traitMod + ' = ' + total + ')';
                 resultClass = 'critical';
             } else if (total >= difficulty) {
                 if (hopeRoll > fearRoll) {
-                    resultText = `✅ Успех с Надеждой! (${total} ≥ ${difficulty})`;
+                    resultText = '✅ Успех с Надеждой! (' + total + ' ≥ ' + difficulty + ')';
                     resultClass = 'success';
-                    // Добавляем надежду
-                    sessionData.hope++;
                 } else {
-                    resultText = `✅ Успех со Страхом (${total} ≥ ${difficulty})`;
+                    resultText = '✅ Успех со Страхом (' + total + ' ≥ ' + difficulty + ')';
                     resultClass = 'success';
-                    // Добавляем страх
-                    sessionData.fear++;
                 }
             } else {
-                resultText = `❌ Неудача (${total} < ${difficulty})`;
+                resultText = '❌ Неудача (' + total + ' < ' + difficulty + ')';
                 resultClass = 'failure';
-                if (fearRoll > hopeRoll) {
-                    sessionData.fear++;
-                }
             }
 
             resultDiv.innerHTML = resultText;
-            resultDiv.className = `roll-result ${resultClass}`;
+            resultDiv.className = 'roll-result ' + resultClass;
             resultDiv.classList.remove('hidden');
-
-            // Отправляем результат боту
-            tg.sendData(JSON.stringify({
-                type: 'dice_roll',
-                hope: hopeRoll,
-                fear: fearRoll,
-                modifier: traitMod,
-                total: total,
-                difficulty: difficulty,
-                success: total >= difficulty,
-                critical: hopeRoll === fearRoll,
-                rollWithHope: hopeRoll > fearRoll
-            }));
 
             rollButton.disabled = false;
         }
 
         function getTraitModifier() {
-            const traitSelect = document.getElementById('trait-modifier');
-            const selectedTrait = traitSelect.value;
+            var traitSelect = document.getElementById('trait-modifier');
+            var selectedTrait = traitSelect.value;
 
-            if (selectedTrait === '0' || !currentCharacter) {
+            if (selectedTrait === '0') {
                 return 0;
             }
 
-            return currentCharacter.traits[selectedTrait] || 0;
+            // Пока возвращаем случайный модификатор от -2 до +3
+            return Math.floor(Math.random() * 6) - 2;
         }
 
-        // Загрузка данных сессии
+        function showAncestryInfo() {
+            var ancestry = document.getElementById('char-ancestry').value;
+            var modal = document.getElementById('ancestry-modal');
+            var title = document.getElementById('modal-ancestry-title');
+            var description = document.getElementById('modal-ancestry-description');
+
+            if (ancestry && ancestryData[ancestry]) {
+                title.textContent = ancestryData[ancestry].name;
+                description.textContent = ancestryData[ancestry].description;
+            } else {
+                title.textContent = "Информация о родословной";
+                description.textContent = "Сначала выберите родословную из списка.";
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeAncestryModal() {
+            document.getElementById('ancestry-modal').style.display = 'none';
+        }
+
+        // Функции состояния сессии
         function loadSessionData() {
             // Загружаем персонажа из локального хранилища
             if (typeof(Storage) !== "undefined") {
-                const savedCharacter = localStorage.getItem('daggerheart_character');
+                var savedCharacter = localStorage.getItem('daggerheart_character');
                 if (savedCharacter) {
                     currentCharacter = JSON.parse(savedCharacter);
                 }
             }
-
-            // Обновляем интерфейс
             updateSessionDisplay();
         }
 
@@ -629,67 +837,27 @@
             document.getElementById('session-fear').textContent = sessionData.fear;
             document.getElementById('session-hope').textContent = sessionData.hope;
 
-            const characterInfo = document.getElementById('character-info');
+            var characterInfo = document.getElementById('character-info');
             if (currentCharacter) {
-                characterInfo.innerHTML = `
-                    <strong>${currentCharacter.name}</strong><br>
-                    ${currentCharacter.ancestry} ${currentCharacter.class}<br>
-                    💖 ${currentCharacter.hit_points}/${currentCharacter.max_hit_points} HP<br>
-                    😰 ${currentCharacter.stress} Стресс
-                `;
+                characterInfo.innerHTML = '<strong>' + currentCharacter.name + '</strong><br>' +
+                    currentCharacter.ancestry + ' ' + currentCharacter.class + '<br>' +
+                    '💖 ' + currentCharacter.hit_points + '/' + currentCharacter.max_hit_points + ' HP<br>' +
+                    '😰 ' + currentCharacter.stress + ' Стресс';
             } else {
                 characterInfo.innerHTML = '<p>Персонаж не создан</p>';
             }
 
-            const sceneInfo = document.getElementById('current-scene');
+            var sceneInfo = document.getElementById('current-scene');
             if (sessionData.scene) {
-                sceneInfo.innerHTML = `<p>${sessionData.scene}</p>`;
+                sceneInfo.innerHTML = '<p>' + sessionData.scene + '</p>';
             } else {
                 sceneInfo.innerHTML = '<p>Сцена не установлена</p>';
             }
         }
 
-        // Обработка параметров URL
-        function handleUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const action = urlParams.get('action');
-            const sessionId = urlParams.get('session_id');
-
-            if (action === 'create_character') {
-                showCharacterCreation();
-            } else if (action === 'dice_roll') {
-                showDiceRoll();
-            } else if (sessionId) {
-                showSession();
-            }
-        }
-
-        // Инициализация при загрузке
+        // Инициализация
         window.addEventListener('load', function() {
-            handleUrlParams();
-            loadSessionData();
-
-            // Настройка кнопок Telegram
-            tg.MainButton.setText('Закрыть');
-            tg.MainButton.onClick(() => tg.close());
-
-            // Обработка получения данных от бота
-            tg.onEvent('receiveData', function(data) {
-                try {
-                    const parsedData = JSON.parse(data);
-                    if (parsedData.type === 'session_update') {
-                        sessionData = { ...sessionData, ...parsedData.data };
-                        updateSessionDisplay();
-                    }
-                } catch (e) {
-                    console.error('Error parsing received data:', e);
-                }
-            });
-        });
-
-        // Обработка изменения темы
-        tg.onEvent('themeChanged', function() {
-            document.documentElement.style.setProperty('--tg-color-scheme', tg.colorScheme);
+            console.log('Приложение загружено');
         });
     </script>
 </body>
