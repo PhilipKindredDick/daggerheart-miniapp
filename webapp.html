@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daggerheart</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #0088cc);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--tg-theme-hint-color, #666666);
+            font-size: 14px;
+        }
+
+        .card {
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--tg-theme-button-color, #0088cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: opacity 0.2s;
+        }
+
+        .button:hover {
+            opacity: 0.8;
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .button.secondary {
+            background: var(--tg-theme-secondary-bg-color, #f7f7f7);
+            color: var(--tg-theme-text-color, #000000);
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+        }
+
+        .dice-container {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dice.hope {
+            background: linear-gradient(145deg, #4CAF50, #388E3C);
+            color: white;
+        }
+
+        .dice.fear {
+            background: linear-gradient(145deg, #F44336, #D32F2F);
+            color: white;
+        }
+
+        .dice.rolling {
+            animation: roll 0.5s ease-in-out;
+        }
+
+        @keyframes roll {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+        }
+
+        .character-form {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            border-radius: 8px;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #666666);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .resources {
+            display: flex;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .resource {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 8px;
+        }
+
+        .resource.fear {
+            border: 2px solid #F44336;
+        }
+
+        .resource.hope {
+            border: 2px solid #4CAF50;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .roll-result {
+            text-align: center;
+            padding: 20px;
+            margin: 16px 0;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .roll-result.success {
+            background: #E8F5E8;
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+        }
+
+        .roll-result.failure {
+            background: #FFEBEE;
+            color: #C62828;
+            border: 2px solid #F44336;
+        }
+
+        .roll-result.critical {
+            background: #FFF3E0;
+            color: #E65100;
+            border: 2px solid #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главное меню -->
+        <div id="main-menu">
+            <div class="header">
+                <div class="title">⚔️ Daggerheart</div>
+                <div class="subtitle">Настольная ролевая игра</div>
+            </div>
+
+            <div class="card">
+                <button class="button" onclick="showCharacterCreation()">
+                    🎭 Создать персонажа
+                </button>
+                <button class="button" onclick="showDiceRoll()">
+                    🎲 Бросить кубики
+                </button>
+                <button class="button secondary" onclick="showSession()">
+                    📊 Состояние сессии
+                </button>
+            </div>
+        </div>
+
+        <!-- Создание персонажа -->
+        <div id="character-creation" class="character-form">
+            <div class="header">
+                <div class="title">🎭 Создание персонажа</div>
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label class="form-label">Имя персонажа</label>
+                    <input type="text" class="form-input" id="char-name" placeholder="Введите имя">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Родословная</label>
+                    <select class="form-select" id="char-ancestry">
+                        <option value="">Выберите родословную</option>
+                        <option value="human">Человек</option>
+                        <option value="elf">Эльф</option>
+                        <option value="dwarf">Дварф</option>
+                        <option value="halfling">Полурослик</option>
+                        <option value="orc">Орк</option>
+                        <option value="faerie">Фея</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Класс</label>
+                    <select class="form-select" id="char-class">
+                        <option value="">Выберите класс</option>
+                        <option value="guardian">Страж</option>
+                        <option value="warrior">Воин</option>
+                        <option value="rogue">Плут</option>
+                        <option value="ranger">Следопыт</option>
+                        <option value="wizard">Волшебник</option>
+                        <option value="sorcerer">Чародей</option>
+                    </select>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Сила</div>
+                        <input type="number" class="stat-value" id="strength" value="0" min="-3" max="3">
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Проворность</div>
+                        <input type="number" class="stat-value" id="agility" value="0" min="-3" max="3">
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Искусность</div>
+                        <input type="number" class="stat-value" id="finesse" value="0" min="-3" max="3">
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Инстинкт</div>
+                        <input type="number" class="stat-value" id="instinct" value="0" min="-3" max="3">
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Влияние</div>
+                        <input type="number" class="stat-value" id="presence" value="0" min="-3" max="3">
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Знание</div>
+                        <input type="number" class="stat-value" id="knowledge" value="0" min="-3" max="3">
+                    </div>
+                </div>
+
+                <button class="button" onclick="saveCharacter()">
+                    ✅ Сохранить персонажа
+                </button>
+                <button class="button secondary" onclick="showMainMenu()">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+
+        <!-- Бросок кубиков -->
+        <div id="dice-roll" class="hidden">
+            <div class="header">
+                <div class="title">🎲 Бросок кубиков</div>
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label class="form-label">Тип броска</label>
+                    <select class="form-select" id="roll-type">
+                        <option value="action">Бросок действия</option>
+                        <option value="attack">Бросок атаки</option>
+                        <option value="damage">Бросок урона</option>
+                        <option value="reaction">Бросок реакции</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Характеристика</label>
+                    <select class="form-select" id="trait-modifier">
+                        <option value="0">Без модификатора</option>
+                        <option value="strength">Сила</option>
+                        <option value="agility">Проворность</option>
+                        <option value="finesse">Искусность</option>
+                        <option value="instinct">Инстинкт</option>
+                        <option value="presence">Влияние</option>
+                        <option value="knowledge">Знание</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Сложность</label>
+                    <input type="number" class="form-input" id="difficulty" value="12" min="5" max="20">
+                </div>
+
+                <div class="dice-container">
+                    <div class="dice hope" id="hope-dice">?</div>
+                    <div class="dice fear" id="fear-dice">?</div>
+                </div>
+
+                <button class="button" onclick="rollDice()" id="roll-button">
+                    🎲 Бросить кости дуальности
+                </button>
+
+                <div id="roll-result" class="hidden"></div>
+
+                <button class="button secondary" onclick="showMainMenu()">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+
+        <!-- Состояние сессии -->
+        <div id="session-state" class="hidden">
+            <div class="header">
+                <div class="title">📊 Состояние сессии</div>
+            </div>
+
+            <div class="resources">
+                <div class="resource fear">
+                    <div class="stat-label">💀 Страх</div>
+                    <div class="stat-value" id="session-fear">0</div>
+                </div>
+                <div class="resource hope">
+                    <div class="stat-label">✨ Надежда</div>
+                    <div class="stat-value" id="session-hope">0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="form-label">👤 Мой персонаж</div>
+                <div id="character-info">
+                    <p>Персонаж не создан</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="form-label">🌍 Текущая сцена</div>
+                <div id="current-scene">
+                    <p>Сцена не установлена</p>
+                </div>
+            </div>
+
+            <button class="button secondary" onclick="showMainMenu()">
+                ← Назад
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+
+        // Применяем тему Telegram
+        document.documentElement.style.setProperty('--tg-color-scheme', tg.colorScheme);
+
+        // Глобальные переменные
+        let currentCharacter = null;
+        let sessionData = {
+            fear: 0,
+            hope: 0,
+            scene: '',
+            players: []
+        };
+
+        // Функции навигации
+        function showMainMenu() {
+            hideAllScreens();
+            document.getElementById('main-menu').classList.remove('hidden');
+            tg.MainButton.hide();
+        }
+
+        function showCharacterCreation() {
+            hideAllScreens();
+            document.getElementById('character-creation').classList.remove('hidden');
+            tg.MainButton.hide();
+        }
+
+        function showDiceRoll() {
+            hideAllScreens();
+            document.getElementById('dice-roll').classList.remove('hidden');
+            tg.MainButton.hide();
+        }
+
+        function showSession() {
+            hideAllScreens();
+            document.getElementById('session-state').classList.remove('hidden');
+            loadSessionData();
+            tg.MainButton.hide();
+        }
+
+        function hideAllScreens() {
+            const screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+        }
+
+        // Создание персонажа
+        function saveCharacter() {
+            const name = document.getElementById('char-name').value;
+            const ancestry = document.getElementById('char-ancestry').value;
+            const charClass = document.getElementById('char-class').value;
+
+            if (!name || !ancestry || !charClass) {
+                tg.showAlert('Пожалуйста, заполните все обязательные поля!');
+                return;
+            }
+
+            const character = {
+                name: name,
+                ancestry: ancestry,
+                class: charClass,
+                traits: {
+                    strength: parseInt(document.getElementById('strength').value),
+                    agility: parseInt(document.getElementById('agility').value),
+                    finesse: parseInt(document.getElementById('finesse').value),
+                    instinct: parseInt(document.getElementById('instinct').value),
+                    presence: parseInt(document.getElementById('presence').value),
+                    knowledge: parseInt(document.getElementById('knowledge').value)
+                },
+                hit_points: 20,
+                max_hit_points: 20,
+                stress: 0,
+                armor_slots: 3
+            };
+
+            currentCharacter = character;
+
+            // Сохраняем в локальное хранилище
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('daggerheart_character', JSON.stringify(character));
+            }
+
+            // Отправляем данные боту
+            tg.sendData(JSON.stringify({
+                type: 'character_created',
+                character: character
+            }));
+
+            tg.showAlert('Персонаж создан успешно!');
+            showMainMenu();
+        }
+
+        // Система бросков кубиков
+        function rollDice() {
+            const rollButton = document.getElementById('roll-button');
+            const hopeDice = document.getElementById('hope-dice');
+            const fearDice = document.getElementById('fear-dice');
+            const resultDiv = document.getElementById('roll-result');
+
+            rollButton.disabled = true;
+            hopeDice.classList.add('rolling');
+            fearDice.classList.add('rolling');
+
+            // Симулируем анимацию броска
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                hopeDice.textContent = Math.floor(Math.random() * 12) + 1;
+                fearDice.textContent = Math.floor(Math.random() * 12) + 1;
+                rollCount++;
+
+                if (rollCount >= 10) {
+                    clearInterval(rollInterval);
+                    finishRoll();
+                }
+            }, 50);
+        }
+
+        function finishRoll() {
+            const hopeDice = document.getElementById('hope-dice');
+            const fearDice = document.getElementById('fear-dice');
+            const resultDiv = document.getElementById('roll-result');
+            const rollButton = document.getElementById('roll-button');
+
+            // Финальный бросок
+            const hopeRoll = Math.floor(Math.random() * 12) + 1;
+            const fearRoll = Math.floor(Math.random() * 12) + 1;
+
+            hopeDice.textContent = hopeRoll;
+            fearDice.textContent = fearRoll;
+
+            hopeDice.classList.remove('rolling');
+            fearDice.classList.remove('rolling');
+
+            // Определяем результат
+            const difficulty = parseInt(document.getElementById('difficulty').value);
+            const traitMod = getTraitModifier();
+            const total = Math.max(hopeRoll, fearRoll) + traitMod;
+
+            let resultText = '';
+            let resultClass = '';
+
+            // Проверяем критический успех
+            if (hopeRoll === fearRoll) {
+                resultText = `🌟 КРИТИЧЕСКИЙ УСПЕХ! (${hopeRoll}/${fearRoll} + ${traitMod} = ${total})`;
+                resultClass = 'critical';
+            } else if (total >= difficulty) {
+                if (hopeRoll > fearRoll) {
+                    resultText = `✅ Успех с Надеждой! (${total} ≥ ${difficulty})`;
+                    resultClass = 'success';
+                    // Добавляем надежду
+                    sessionData.hope++;
+                } else {
+                    resultText = `✅ Успех со Страхом (${total} ≥ ${difficulty})`;
+                    resultClass = 'success';
+                    // Добавляем страх
+                    sessionData.fear++;
+                }
+            } else {
+                resultText = `❌ Неудача (${total} < ${difficulty})`;
+                resultClass = 'failure';
+                if (fearRoll > hopeRoll) {
+                    sessionData.fear++;
+                }
+            }
+
+            resultDiv.innerHTML = resultText;
+            resultDiv.className = `roll-result ${resultClass}`;
+            resultDiv.classList.remove('hidden');
+
+            // Отправляем результат боту
+            tg.sendData(JSON.stringify({
+                type: 'dice_roll',
+                hope: hopeRoll,
+                fear: fearRoll,
+                modifier: traitMod,
+                total: total,
+                difficulty: difficulty,
+                success: total >= difficulty,
+                critical: hopeRoll === fearRoll,
+                rollWithHope: hopeRoll > fearRoll
+            }));
+
+            rollButton.disabled = false;
+        }
+
+        function getTraitModifier() {
+            const traitSelect = document.getElementById('trait-modifier');
+            const selectedTrait = traitSelect.value;
+
+            if (selectedTrait === '0' || !currentCharacter) {
+                return 0;
+            }
+
+            return currentCharacter.traits[selectedTrait] || 0;
+        }
+
+        // Загрузка данных сессии
+        function loadSessionData() {
+            // Загружаем персонажа из локального хранилища
+            if (typeof(Storage) !== "undefined") {
+                const savedCharacter = localStorage.getItem('daggerheart_character');
+                if (savedCharacter) {
+                    currentCharacter = JSON.parse(savedCharacter);
+                }
+            }
+
+            // Обновляем интерфейс
+            updateSessionDisplay();
+        }
+
+        function updateSessionDisplay() {
+            document.getElementById('session-fear').textContent = sessionData.fear;
+            document.getElementById('session-hope').textContent = sessionData.hope;
+
+            const characterInfo = document.getElementById('character-info');
+            if (currentCharacter) {
+                characterInfo.innerHTML = `
+                    <strong>${currentCharacter.name}</strong><br>
+                    ${currentCharacter.ancestry} ${currentCharacter.class}<br>
+                    💖 ${currentCharacter.hit_points}/${currentCharacter.max_hit_points} HP<br>
+                    😰 ${currentCharacter.stress} Стресс
+                `;
+            } else {
+                characterInfo.innerHTML = '<p>Персонаж не создан</p>';
+            }
+
+            const sceneInfo = document.getElementById('current-scene');
+            if (sessionData.scene) {
+                sceneInfo.innerHTML = `<p>${sessionData.scene}</p>`;
+            } else {
+                sceneInfo.innerHTML = '<p>Сцена не установлена</p>';
+            }
+        }
+
+        // Обработка параметров URL
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            const sessionId = urlParams.get('session_id');
+
+            if (action === 'create_character') {
+                showCharacterCreation();
+            } else if (action === 'dice_roll') {
+                showDiceRoll();
+            } else if (sessionId) {
+                showSession();
+            }
+        }
+
+        // Инициализация при загрузке
+        window.addEventListener('load', function() {
+            handleUrlParams();
+            loadSessionData();
+
+            // Настройка кнопок Telegram
+            tg.MainButton.setText('Закрыть');
+            tg.MainButton.onClick(() => tg.close());
+
+            // Обработка получения данных от бота
+            tg.onEvent('receiveData', function(data) {
+                try {
+                    const parsedData = JSON.parse(data);
+                    if (parsedData.type === 'session_update') {
+                        sessionData = { ...sessionData, ...parsedData.data };
+                        updateSessionDisplay();
+                    }
+                } catch (e) {
+                    console.error('Error parsing received data:', e);
+                }
+            });
+        });
+
+        // Обработка изменения темы
+        tg.onEvent('themeChanged', function() {
+            document.documentElement.style.setProperty('--tg-color-scheme', tg.colorScheme);
+        });
+    </script>
+</body>
+</html>
