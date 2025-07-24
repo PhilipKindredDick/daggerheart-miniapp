@@ -291,6 +291,57 @@
             color: #E65100;
             border: 2px solid #FF9800;
         }
+
+        /* ПРАВКА#2: Стили для системы правил и гиперссылок */
+        .rules-link {
+            color: var(--tg-theme-link-color, #0088cc);
+            text-decoration: underline;
+            cursor: pointer;
+            font-style: italic;
+        }
+
+        .rules-link:hover {
+            opacity: 0.7;
+        }
+
+        .ancestry-description {
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .ancestry-description strong {
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .ability-title {
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        .rules-content {
+            line-height: 1.5;
+        }
+
+        .rules-section {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 8px;
+        }
+
+        .rules-section h3 {
+            margin-bottom: 8px;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #666666);
+            margin-bottom: 16px;
+        }
+        /* КОНЕЦ_ПРАВКИ */
     </style>
 </head>
 <body>
@@ -312,6 +363,11 @@
                 <button class="button secondary" onclick="showSession()">
                     📊 Состояние сессии
                 </button>
+                <!-- ПРАВКА#1: Добавлена кнопка Правила на главный экран -->
+                <button class="button secondary" onclick="showRules()">
+                    📚 Правила
+                </button>
+                <!-- КОНЕЦ_ПРАВКИ -->
             </div>
         </div>
 
@@ -331,20 +387,6 @@
                         <div class="form-group">
                             <label class="form-label">Имя персонажа</label>
                             <input type="text" class="form-input" id="char-name" placeholder="Введите имя" onchange="updatePortrait()">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Гендер</label>
-                            <div class="gender-selector">
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="male" checked onchange="updatePortrait()">
-                                    <span>👨 Мужской</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="female" onchange="updatePortrait()">
-                                    <span>👩 Женский</span>
-                                </label>
-                            </div>
                         </div>
 
                         <div class="form-group">
@@ -379,6 +421,20 @@
                                 <option value="elf">Эльф</option>
                                 <option value="etheris">Эфирис</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Гендер</label>
+                            <div class="gender-selector">
+                                <label class="radio-option">
+                                    <input type="radio" name="gender" value="male" checked onchange="updatePortrait()">
+                                    <span>♂</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="gender" value="female" onchange="updatePortrait()">
+                                    <span>♀</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -513,6 +569,114 @@
             </div>
         </div>
 
+        <!-- ПРАВКА#3: Добавлен экран правил с глоссарием и навигацией -->
+        <div id="rules" class="hidden">
+            <div class="header">
+                <div class="title">📚 Правила</div>
+            </div>
+
+            <div class="card">
+                <div class="breadcrumb" id="rules-breadcrumb">Правила</div>
+                
+                <div id="rules-main">
+                    <div class="form-group">
+                        <label class="form-label">Разделы правил</label>
+                        <button class="button secondary" onclick="showRulesSection('distances')">🎯 Дистанции</button>
+                        <button class="button secondary" onclick="showRulesSection('combat')">⚔️ Бой</button>
+                        <button class="button secondary" onclick="showRulesSection('glossary')">📖 Глоссарий</button>
+                    </div>
+                </div>
+
+                <div id="rules-distances" class="hidden">
+                    <div class="rules-content">
+                        <h3>🎯 Дистанции</h3>
+                        <div class="rules-section">
+                            <h4>Вплотную</h4>
+                            <p>Ваш персонаж находится на расстоянии, позволяющем коснуться цели. Персонаж может коснуться цели, находящийся на расстоянии до метра от него. Имейте в виду, что дистанция Вплотную может быть больше для особо крупных персонажей.</p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>Близко</h4>
+                            <p>Короткое расстояние в пределах прямой видимости.</p>
+                        </div>
+                        <!-- ПРАВКА#14: Обновлено описание дистанции Средне -->
+                        <div class="rules-section">
+                            <h4>Средне</h4>
+                            <p>Ваш персонаж находится достаточно близко к цели, чтобы видеть ее в основных деталях, например, с другого конца комнаты или соседнего рыночного прилавка. Это расстояние составляет примерно от 3 до 9 метров. Находясь в опасности, персонаж может переместиться Вплотную к любой цели, находящейся в пределах Средней дистанции, как часть своего действия.</p>
+                        </div>
+                        <!-- ПРАВКА#15: Добавлено описание дистанции Далеко -->
+                        <div class="rules-section">
+                            <h4>Далеко</h4>
+                            <p>Ваш персонаж находится достаточно далеко, чтобы видеть внешний вид цели, но не детали, например, через небольшое поле боя или в конце большого коридора. Это расстояние составляет примерно от 9 до 30 метров. Пока персонаж находится в опасности, Мастер может попросить его совершить бросок Проворности, чтобы безопасно переместиться Вплотную к любой цели, находящейся в пределах Далекой дистанции.</p>
+                        </div>
+                        <!-- КОНЕЦ_ПРАВКИ -->
+                    </div>
+                </div>
+
+                <div id="rules-combat" class="hidden">
+                    <div class="rules-content">
+                        <h3>⚔️ Бой</h3>
+                        <div class="rules-section">
+                            <h4>Раны</h4>
+                            <p>Раны представляют физическое здоровье и выносливость персонажа.</p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>Мастерство</h4>
+                            <p>Ваше мастерство определяет количество костей урона при успешной атаке.</p>
+                        </div>
+                        <!-- ПРАВКА#16: Добавлено описание "Один раз за сессию" -->
+                        <div class="rules-section">
+                            <h4>Один раз за сессию</h4>
+                            <p>Некоторые свойства говорят, что вы можете использовать их "один раз за сессию". Эти свойства не обновляются во время отдыха, но вместо этого становятся доступны в начале вашей следующей сессии Daggerheart. Если ваш стол решает играть в одну долгую сессию, Мастер может решить, что все способности "один раз за сессию" обновляются во время перерыва в игре.</p>
+                        </div>
+                        <!-- КОНЕЦ_ПРАВКИ -->
+                    </div>
+                </div>
+
+                <div id="rules-glossary" class="hidden">
+                    <div class="rules-content">
+                        <h3>📖 Глоссарий</h3>
+                        <!-- ПРАВКА#17: Добавлены все новые термины в алфавитном порядке -->
+                        <div class="rules-section">
+                            <h4>В</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('distances')">Вплотную</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>Д</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('distances')">Далеко</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>И</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('glossary')">Искусность</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>М</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('combat')">Мастерство</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>Н</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('glossary')">Надежда</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>О</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('combat')">Один раз за сессию</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>Р</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('combat')">Рана</span></p>
+                        </div>
+                        <div class="rules-section">
+                            <h4>С</h4>
+                            <p><span class="rules-link" onclick="showRulesSection('distances')">Средне</span></p>
+                        </div>
+                        <!-- КОНЕЦ_ПРАВКИ -->
+                    </div>
+                </div>
+
+                <button class="button secondary" onclick="goBackFromRules()">← Назад</button>
+            </div>
+        </div>
+        <!-- КОНЕЦ_ПРАВКИ -->
+
         <!-- Модальное окно -->
         <div id="ancestry-modal" class="modal">
             <div class="modal-content">
@@ -541,7 +705,15 @@
         var ancestryData = {
             akvan: { 
                 name: "Акван", 
-                description: "Акваны происходят от водных элементалей. Это гуманоиды, чьи тела состоят из плоти и воды. Источник Жизни: Один раз за сессию вы можете использовать немного воды из окрестностей, чтобы исцелить союзника, находящегося Вплотную. Когда вы это делаете, снимите 1 Рану у цели. Водный Кнут: Вы можете вытягивать воду из окружающей среды, чтобы использовать ее для атаки. Сделав это, cчитайте её как оружие Искусности со Средней дистанцией, наносящее d6 магического урона, используя Мастерство. Если вы находитесь в пределах Близкой дистанции от водоема, вы можете потратить Надежду, чтобы увеличить дистанцию атаки до Далёкой и нанести d10 урона вместо этого." 
+                // ПРАВКА#13: ОКОНЧАТЕЛЬНО исправляем описание Акван - заменяем заглушку
+                description: `<p><em>Акваны происходят от водных элементалей. Это гуманоиды, чьи тела состоят из плоти и воды.</em></p>
+                
+                <div class="ability-title"><strong>Источник Жизни:</strong></div>
+                <p><span class="rules-link" onclick="openRulesLink('combat', 'once-per-session')">Один раз за сессию</span> вы можете использовать немного воды из окрестностей, чтобы исцелить союзника, находящегося <span class="rules-link" onclick="openRulesLink('distances', 'vplotnoyu')">Вплотную</span>. Когда вы это делаете, снимите 1 <span class="rules-link" onclick="openRulesLink('combat', 'wounds')">Рану</span> у цели.</p>
+                
+                <div class="ability-title"><strong>Водный Кнут:</strong></div>
+                <p>Вы можете вытягивать воду из окружающей среды, чтобы использовать ее для атаки. Сделав это, считайте её как оружие <span class="rules-link" onclick="openRulesLink('glossary', 'iskusnost')">Искусности</span> со <span class="rules-link" onclick="openRulesLink('distances', 'sredne')">Средней</span> дистанцией, наносящее d6 магического урона, используя <span class="rules-link" onclick="openRulesLink('combat', 'masterstvo')">Мастерство</span>. Если вы находитесь в пределах <em>Близкой</em> дистанции от водоема, вы можете потратить <span class="rules-link" onclick="openRulesLink('glossary', 'nadezhda')">Надежду</span>, чтобы увеличить дистанцию атаки до <span class="rules-link" onclick="openRulesLink('distances', 'daleko')">Далёкой</span> и нанести d10 урона вместо этого.</p>`
+                // КОНЕЦ_ПРАВКИ
             },
             aeris: { 
                 name: "Аэрис", 
@@ -637,6 +809,10 @@
             }
         };
         
+        // ПРАВКА#5: Добавлены переменные для системы правил и навигации
+        var rulesFromScreen = 'main-menu'; // Откуда пришли в правила
+        // КОНЕЦ_ПРАВКИ
+
         // Функции навигации
         function showMainMenu() {
             hideAllScreens();
@@ -659,8 +835,73 @@
             loadSessionData();
         }
 
-        function hideAllScreens() {
+        // ПРАВКА#6: Добавлены функции для работы с правилами
+        function showRules() {
+            rulesFromScreen = getCurrentScreen();
+            hideAllScreens();
+            document.getElementById('rules').classList.remove('hidden');
+            showRulesMain();
+        }
+
+        function showRulesMain() {
+            hideAllRulesSections();
+            document.getElementById('rules-main').classList.remove('hidden');
+            document.getElementById('rules-breadcrumb').textContent = 'Правила';
+        }
+
+        function showRulesSection(section) {
+            hideAllRulesSections();
+            document.getElementById('rules-' + section).classList.remove('hidden');
+            
+            var sectionNames = {
+                'distances': 'Правила > Дистанции',
+                'combat': 'Правила > Бой', 
+                'glossary': 'Правила > Глоссарий'
+            };
+            document.getElementById('rules-breadcrumb').textContent = sectionNames[section] || 'Правила';
+        }
+
+        function hideAllRulesSections() {
+            var sections = ['rules-main', 'rules-distances', 'rules-combat', 'rules-glossary'];
+            for (var i = 0; i < sections.length; i++) {
+                document.getElementById(sections[i]).classList.add('hidden');
+            }
+        }
+
+        function openRulesLink(section, anchor) {
+            rulesFromScreen = getCurrentScreen();
+            hideAllScreens();
+            document.getElementById('rules').classList.remove('hidden');
+            showRulesSection(section);
+        }
+
+        function goBackFromRules() {
+            hideAllScreens();
+            if (rulesFromScreen === 'character-creation') {
+                document.getElementById('character-creation').classList.remove('hidden');
+            } else if (rulesFromScreen === 'dice-roll') {
+                document.getElementById('dice-roll').classList.remove('hidden');
+            } else if (rulesFromScreen === 'session-state') {
+                document.getElementById('session-state').classList.remove('hidden');
+                loadSessionData();
+            } else {
+                document.getElementById('main-menu').classList.remove('hidden');
+            }
+        }
+
+        function getCurrentScreen() {
             var screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state'];
+            for (var i = 0; i < screens.length; i++) {
+                if (!document.getElementById(screens[i]).classList.contains('hidden')) {
+                    return screens[i];
+                }
+            }
+            return 'main-menu';
+        }
+        // КОНЕЦ_ПРАВКИ
+
+        function hideAllScreens() {
+            var screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state', 'rules'];
             for (var i = 0; i < screens.length; i++) {
                 document.getElementById(screens[i]).classList.add('hidden');
             }
@@ -806,13 +1047,20 @@
             var title = document.getElementById('modal-ancestry-title');
             var description = document.getElementById('modal-ancestry-description');
 
+            // ПРАВКА#10: Исправлена функция отображения информации о родословной
             if (ancestry && ancestryData[ancestry]) {
                 title.textContent = ancestryData[ancestry].name;
-                description.textContent = ancestryData[ancestry].description;
+                // Проверяем, есть ли HTML разметка в описании
+                if (ancestryData[ancestry].description.includes('<')) {
+                    description.innerHTML = ancestryData[ancestry].description;
+                } else {
+                    description.textContent = ancestryData[ancestry].description;
+                }
             } else {
                 title.textContent = "Информация о родословной";
                 description.textContent = "Сначала выберите родословную из списка.";
             }
+            // КОНЕЦ_ПРАВКИ
 
             modal.style.display = 'block';
         }
