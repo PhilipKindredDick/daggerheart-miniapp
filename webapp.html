@@ -67,14 +67,7 @@
                     box-sizing: border-box;
                 }
                 
-                .domain-icon {
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 2px;
-                    object-fit: contain; /* обязательно contain */
-                    background: transparent; /* убираем фон, если был */
-                    padding: 1px; /* небольшой внутренний отступ, чтобы не обрезалось */
-                    box-sizing: border-box;
+
                 }
                 function showCharacterCreation() {
                     hideAllScreens();
@@ -86,8 +79,7 @@
                     domain1Slot.querySelector('.domain-name').textContent = "-";
                     domain2Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
                     domain2Slot.querySelector('.domain-name').textContent = "-";
-                }0px; /* было 50px */
-                padding: 0px;   /* было 6px */
+                }
             }
             .domain-icon {
                 width: 32px;     /* было 32px */
@@ -880,8 +872,8 @@
         }
 
         .domain-icon {
-            width: 42px;
-            height: 42px;
+            width: 50px;
+            height: 50px;
             border-radius: 6px;
             object-fit: cover;
             border-radius: 8px;
@@ -1486,6 +1478,8 @@
             domain1Slot.querySelector('.domain-name').textContent = "-";
             domain2Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
             domain2Slot.querySelector('.domain-name').textContent = "-";
+            // Сброс портрета на заглушку
+            document.getElementById('char-portrait').src = "images/portraits/placeholder.png";
         }
 
         function showDiceRoll() {
