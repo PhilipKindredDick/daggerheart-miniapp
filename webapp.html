@@ -956,7 +956,7 @@
                                 <button class="info-button" onclick="showAncestryInfo()" title="Информация о родословной">?</button>
                             </label>
                             <select class="form-select" id="char-ancestry" onchange="updatePortrait()">
-                                <option value="">Выберите родословную</option>
+                                <option value="">Выбрать</option>
                                 <option value="akvan">Акван</option>
                                 <option value="aeris">Аэрис</option>
                                 <option value="giant">Великан</option>
@@ -1008,7 +1008,7 @@
                             <button class="info-button" onclick="showClassInfo()" title="Информация о классе">?</button>
                         </label>
                         <select class="form-select" id="char-class" onchange="updateDomains()">
-                            <option value="">Выберите класс</option>
+                            <option value="">Выбрать</option>
                             <option value="bard">Бард</option>
                             <option value="rogue">Плут</option>
                             <option value="sorcerer">Чародей</option>
@@ -1574,7 +1574,7 @@
             var ancestry = document.getElementById('char-ancestry').value;
             var genderRadios = document.getElementsByName('gender');
             var gender = 'male';
-            
+
             for (var i = 0; i < genderRadios.length; i++) {
                 if (genderRadios[i].checked) {
                     gender = genderRadios[i].value;
@@ -1583,8 +1583,11 @@
             }
 
             var portraitImg = document.getElementById('char-portrait');
-            
-            if (ancestry && portraitImg) {
+
+            if (!ancestry || ancestry === "") {
+                // Показываем портрет-заглушку
+                portraitImg.src = "images/portraits/placeholder.png";
+            } else if (ancestry && portraitImg) {
                 var portraitPath = './images/portraits/' + ancestry + '_' + gender + '.png';
                 portraitImg.src = portraitPath;
             }
