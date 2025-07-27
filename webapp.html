@@ -53,26 +53,30 @@
             .domain-slot {
                 min-width: 12                /* ...existing code... */
                 .domain-slot {
-                    min-width: 50px;
-                    padding: 8px; /* увеличен отступ для пространства вокруг SVG */
-                    background: var(--tg-theme-bg-color, #ffffff);
-                    border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
-                    border-radius: 8px;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     gap: 4px;
+                    padding: 6px;
+                    background: var(--tg-theme-bg-color, #ffffff);
+                    border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+                    border-radius: 8px;
+                    min-width: 90px;      /* фиксированная ширина */
+                    max-width: 90px;
+                    width: 90px;
+                    box-sizing: border-box;
                 }
                 
                 .domain-icon {
                     width: 32px;
                     height: 32px;
-                    border-radius: 6px;
+                    border-radius: 2px;
                     object-fit: contain; /* обязательно contain */
                     background: transparent; /* убираем фон, если был */
-                    padding: 2px; /* небольшой внутренний отступ, чтобы не обрезалось */
+                    padding: 1px; /* небольшой внутренний отступ, чтобы не обрезалось */
+                    box-sizing: border-box;
                 }
-                /* ...existing code... */                function showCharacterCreation() {
+                function showCharacterCreation() {
                     hideAllScreens();
                     document.getElementById('character-creation').classList.remove('hidden');
                     // Сброс доменов на заглушки при открытии экрана
@@ -96,17 +100,13 @@
             .class-group .form-select {
                 font-size: 14px;
                 padding: 8px;
-                height: 36px;
-                max-width: 120px;
+                height: 40px;
+                max-width: 140px;
+                min-width: 140px;
+                width: 140px;
+                box-sizing: border-box;
             }
-            /* ...existing code... */            /* ...existing code... */
-            .domain-icon {
-                width: 28px;   /* было 32px */
-                height: 28px;  /* было 32px */
-                border-radius: 8px;
-                object-fit: contain;
-            }
-            /* ...existing code... */ ["midnight", "arcana"] },
+             
             druid: { name: "Друид", description: "ЗАГЛУШКА_ОПИСАНИЕ_ДРУИД - Замените это описание на реальное из правил Daggerheart", domains: ["arcana", "sage"] },
             ranger: { name: "Следопыт", description: "ЗАГЛУШКА_ОПИСАНИЕ_СЛЕДОПЫТ - Замените это описание на реальное из правил Daggerheart", domains: ["sage", "bone"] },
             warrior: { name: "Воин", description: "ЗАГЛУШКА_ОПИСАНИЕ_ВОИН - Замените это описание на реальное из правил Daggerheart", domains: ["bone", "blade"] },
@@ -873,22 +873,34 @@
             background: var(--tg-theme-bg-color, #ffffff);
             border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
             border-radius: 8px;
-            min-width: 50px;
+            min-width: 70px;      /* фиксированная ширина */
+            max-width: 70px;
+            width: 70px;
+            box-sizing: border-box;
         }
 
         .domain-icon {
-            width: 32px;
-            height: 32px;
+            width: 42px;
+            height: 42px;
             border-radius: 6px;
             object-fit: cover;
+            border-radius: 8px;
+            object-fit: contain;
+            background: transparent;
+            padding: 4px;
+            box-sizing: border-box;
         }
 
         .domain-name {
-            font-size: 9px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--tg-theme-text-color, #000000);
             text-align: center;
             line-height: 1.2;
+            max-width: 80px;      /* ограничение ширины текста */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         /* КОНЕЦ_ПРАВКИ */
     </style>
