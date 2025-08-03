@@ -552,6 +552,7 @@
 
         .character-portrait {
             flex-shrink: 0;
+            margin-top: 30px; 
         }
 
         .character-portrait img {
@@ -1081,7 +1082,10 @@
 
                 <div class="background-gender-row">
                     <div class="form-group background-group">
-                        <label class="form-label">Происхождение</label>
+                        <label class="form-label">
+                            Происхождение
+                            <button class="info-button" onclick="showBackgroundInfo()" title="Информация о происхождении">?</button>
+                        </label>
                         <select class="form-select" id="char-background">
                             <option value="">Выбрать</option>
                             <option value="noble">Великородное</option>
@@ -1406,6 +1410,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- 2. Модальное окно для происхождений -->
+        <div id="background-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="modal-background-title">Информация о происхождении</div>
+                    <button class="close-button" onclick="closeBackgroundModal()">&times;</button>
+                </div>
+                <div id="modal-background-description">
+                    Выберите происхождение для просмотра информации.
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -1573,6 +1591,70 @@
             }
         };
 
+        // Данные о происхождениях
+        var backgroundData = {
+            noble: { 
+                name: "Великородное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ВЕЛИКОРОДНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж происходит из знатной семьи." 
+            },
+            military: { 
+                name: "Военное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ВОЕННОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж имеет военное прошлое." 
+            },
+            mountain: { 
+                name: "Горное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ГОРНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж вырос в горах." 
+            },
+            dogmatic: { 
+                name: "Догматичное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ДОГМАТИЧНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж следует строгим убеждениям." 
+            },
+            lost: { 
+                name: "Заблудшее", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ЗАБЛУДШЕЕ - Замените это описание на реальное из правил Daggerheart. Персонаж потерял свой путь." 
+            },
+            nomadic: { 
+                name: "Кочевое", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_КОЧЕВОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж всегда в движении." 
+            },
+            criminal: { 
+                name: "Криминальное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_КРИМИНАЛЬНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж связан с преступным миром." 
+            },
+            forest: { 
+                name: "Лесное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ЛЕСНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж вырос среди деревьев." 
+            },
+            frost: { 
+                name: "Морозное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_МОРОЗНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж закален холодом." 
+            },
+            sea: { 
+                name: "Морское", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_МОРСКОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж связан с морем." 
+            },
+            scientific: { 
+                name: "Научное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_НАУЧНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж стремится к знаниям." 
+            },
+            liberated: { 
+                name: "Освобождённое", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ОСВОБОЖДЁННОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж обрел свободу." 
+            },
+            underground: { 
+                name: "Подземное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ПОДЗЕМНОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж вырос под землей." 
+            },
+            desert: { 
+                name: "Пустынное", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_ПУСТЫННОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж закален пустыней." 
+            },
+            rural: { 
+                name: "Сельское", 
+                description: "ЗАГЛУШКА_ОПИСАНИЕ_СЕЛЬСКОЕ - Замените это описание на реальное из правил Daggerheart. Персонаж вырос в деревне." 
+            }
+        };
+
         // Данные о доменах
         var domainData = {
             codex:    { name: "Кодекс",    icon: "images/domaines/codex.svg" },
@@ -1597,15 +1679,41 @@
         function showCharacterCreation() {
             hideAllScreens();
             document.getElementById('character-creation').classList.remove('hidden');
-            // Сброс доменов на заглушки при открытии экрана
+            
+            // Сброс всех полей формы
+            document.getElementById('char-name').value = '';
+            document.getElementById('char-ancestry').value = '';
+            document.getElementById('char-background').value = '';
+            document.getElementById('char-class').value = '';
+            
+            // Сброс радиокнопок гендера на мужской по умолчанию
+            var genderRadios = document.getElementsByName('gender');
+            for (var i = 0; i < genderRadios.length; i++) {
+                if (genderRadios[i].value === 'male') {
+                    genderRadios[i].checked = true;
+                } else {
+                    genderRadios[i].checked = false;
+                }
+            }
+            
+            // Сброс характеристик на 0
+            document.getElementById('strength').value = 0;
+            document.getElementById('agility').value = 0;
+            document.getElementById('finesse').value = 0;
+            document.getElementById('instinct').value = 0;
+            document.getElementById('presence').value = 0;
+            document.getElementById('knowledge').value = 0;
+            
+            // Сброс доменов на заглушки
             var domain1Slot = document.getElementById('domain-1');
             var domain2Slot = document.getElementById('domain-2');
             domain1Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
             domain1Slot.querySelector('.domain-name').textContent = "-";
             domain2Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
             domain2Slot.querySelector('.domain-name').textContent = "-";
+            
             // Сброс портрета на заглушку
-            document.getElementById('char-portrait').src = "images/portraits/placeholder.png";
+            document.getElementById('char-portrait').src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgdmlld0JveD0iMCAwIDExMCAxMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMTEiIGhlaWdodD0iMTEwIiByeD0iNTUiIGZpbGw9IiNGNUY1RjUiLz4KPHN2ZyB4PSIzMCIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI2MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyMCIgcj0iMTIiIGZpbGw9IiNERCQiLz4KICA8ZWxsaXBzZSBjeD0iMjUiIGN5PSI0NSIgcng9IjE4IiByeT0iMjAiIGZpbGw9IiNERCQiLz4KPC9zdmc+Cjwvc3ZnPg==";
         }
 
         function showDiceRoll() {
@@ -1821,6 +1929,31 @@
 
         function closeAncestryModal() {
             document.getElementById('ancestry-modal').style.display = 'none';
+        }
+
+        function showBackgroundInfo() {
+            var backgroundValue = document.getElementById('char-background').value;
+            var modal = document.getElementById('background-modal');
+            var title = document.getElementById('modal-background-title');
+            var description = document.getElementById('modal-background-description');
+
+            if (backgroundValue && backgroundData[backgroundValue]) {
+                title.textContent = backgroundData[backgroundValue].name;
+                if (backgroundData[backgroundValue].description.includes('<')) {
+                    description.innerHTML = backgroundData[backgroundValue].description;
+                } else {
+                    description.textContent = backgroundData[backgroundValue].description;
+                }
+            } else {
+                title.textContent = "Информация о происхождении";
+                description.textContent = "Сначала выберите происхождение из списка.";
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeBackgroundModal() {
+            document.getElementById('background-modal').style.display = 'none';
         }
 
         // Система бросков кубиков
