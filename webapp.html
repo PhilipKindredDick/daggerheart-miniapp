@@ -82,13 +82,13 @@
                 }
             }
             .domain-icon {
-                width: 32px;     /* было 32px */
-                height: 32px;    /* было 32px */
+                width: 32px;     
+                height: 32px;    
             }
             .domain-name {
-                font-size: 12px; /* было 9px */
+                font-size: 12px; 
             }
-            /* Сделать поле выбора класса меньше */
+            
             .class-group .form-select {
                 font-size: 14px;
                 padding: 8px;
@@ -491,7 +491,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 10px;
         }
 
         .title {
@@ -510,7 +510,7 @@
             background: var(--tg-theme-secondary-bg-color, #f7f7f7);
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
         }
 
@@ -525,7 +525,7 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             transition: opacity 0.2s;
         }
 
@@ -546,7 +546,7 @@
         .character-card {
             display: flex;
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
             align-items: flex-start;
         }
 
@@ -569,7 +569,7 @@
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 4px;
         }
 
         .form-label {
@@ -589,10 +589,49 @@
             font-size: 16px;
         }
 
+        .gender-row-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0px;
+            margin-right: 28px;
+        }
+
         .gender-selector {
             display: flex;
-            gap: 12px;
-            margin-top: 4px;
+            flex-direction: row;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;  
+        }
+
+        .gender-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 0px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            min-width: 90px;
+            max-width: 90px;
+            width: 90px; 
+            box-sizing: border-box;
+            margin-right: 28px;
+        }
+
+        .gender-slot .stat-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000000);
+            text-align: center;
+            line-height: 1.2;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 2px;
         }
 
         .radio-option {
@@ -680,7 +719,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 4px;
         }
 
         .modal-title {
@@ -774,7 +813,7 @@
             border: 2px solid #FF9800;
         }
 
-        /* ПРАВКА#2: Стили для системы правил и гиперссылок */
+        /* Стили для системы правил и гиперссылок */
         .rules-link {
             color: var(--tg-theme-link-color, #0088cc);
             text-decoration: underline;
@@ -798,7 +837,7 @@
 
         .ability-title {
             font-weight: bold;
-            margin-top: 12px;
+            margin-top: 8px;
             margin-bottom: 4px;
         }
 
@@ -829,7 +868,7 @@
             display: flex;
             gap: 16px;
             align-items: flex-start;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
 
         .class-group {
@@ -865,7 +904,7 @@
             background: var(--tg-theme-bg-color, #ffffff);
             border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
             border-radius: 8px;
-            min-width: 70px;      /* фиксированная ширина */
+            min-width: 70px;      
             max-width: 70px;
             width: 70px;
             box-sizing: border-box;
@@ -894,7 +933,71 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        /* КОНЕЦ_ПРАВКИ */
+
+        .defense-row-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .defense-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .defense-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            padding: 8px 0;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 8px;
+            min-width: 70px;
+        }
+
+        .defense-item .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
+            margin-bottom: 2px;
+            line-height: 1;
+            width: 2.5em;
+            text-align: center;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .defense-item .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000000);
+            text-align: center;
+            line-height: 1.2;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        .background-gender-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            margin-bottom: 4px;
+        }
+
+        .background-gender-row .gender-slot {
+             margin-left: 28px;
+        }
+
+        .background-group {
+            flex: 1;
+            min-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -916,11 +1019,9 @@
                 <button class="button secondary" onclick="showSession()">
                     📊 Состояние сессии
                 </button>
-                <!-- ПРАВКА#1: Добавлена кнопка Правила на главный экран -->
                 <button class="button secondary" onclick="showRules()">
                     📚 Правила
                 </button>
-                <!-- КОНЕЦ_ПРАВКИ -->
             </div>
         </div>
 
@@ -975,24 +1076,46 @@
                                 <option value="etheris">Эфирис</option>
                             </select>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Гендер</label>
-                            <div class="gender-selector">
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="male" checked onchange="updatePortrait()">
-                                    <span>♂</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="female" onchange="updatePortrait()">
-                                    <span>♀</span>
-                                </label>
-                            </div>
+                <div class="background-gender-row">
+                    <div class="form-group background-group">
+                        <label class="form-label">Происхождение</label>
+                        <select class="form-select" id="char-background">
+                            <option value="">Выбрать</option>
+                            <option value="noble">Великородное</option>
+                            <option value="military">Военное</option>
+                            <option value="mountain">Горное</option>
+                            <option value="dogmatic">Догматичное</option>
+                            <option value="lost">Заблудшее</option>
+                            <option value="nomadic">Кочевое</option>
+                            <option value="criminal">Криминальное</option>
+                            <option value="forest">Лесное</option>
+                            <option value="frost">Морозное</option>
+                            <option value="sea">Морское</option>
+                            <option value="scientific">Научное</option>
+                            <option value="liberated">Освобождённое</option>
+                            <option value="underground">Подземное</option>
+                            <option value="desert">Пустынное</option>
+                            <option value="rural">Сельское</option>
+                        </select>
+                    </div>
+                    <div class="gender-slot">
+                        <label class="stat-label">Гендер</label>
+                        <div class="gender-selector">
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="male" checked onchange="updatePortrait()">
+                                <span>♂</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="female" onchange="updatePortrait()">
+                                <span>♀</span>
+                            </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Класс и домены на одной строке -->
                 <div class="class-domains-row">
                     <div class="form-group class-group">
                         <label class="form-label">
@@ -1024,6 +1147,19 @@
                                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1zbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iI0Y1RjVGNSIvPgo8dGV4dCB4PSIxNiIgeT0iMjEiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iI0RERCIgdGV4dC1hbmNоб3I9Im1pZGRsZSI+PzwvdGV4dD4KPC9zdmc+" alt="Домен 2" class="domain-icon">
                                 <span class="domain-name">-</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="defense-row-wrapper">
+                    <div class="defense-row">
+                        <div class="defense-item">
+                            <div class="stat-value" id="evasion" readonly>0</div>
+                            <div class="stat-label">Уклонение</div>
+                        </div>
+                        <div class="defense-item">
+                            <div class="stat-value" id="armor" readonly>0</div>
+                            <div class="stat-label">Броня</div>
                         </div>
                     </div>
                 </div>
@@ -1145,7 +1281,7 @@
             </div>
         </div>
 
-        <!-- ПРАВКА#3: Добавлен экран правил с глоссарием и навигацией -->
+        <!-- Добавлен экран правил с глоссарием и навигацией -->
         <div id="rules" class="hidden">
             <div class="header">
                 <div class="title">📚 Правила</div>
@@ -1174,17 +1310,14 @@
                             <h4>Близко</h4>
                             <p>Короткое расстояние в пределах прямой видимости.</p>
                         </div>
-                        <!-- ПРАВКА#14: Обновлено описание дистанции Средне -->
                         <div class="rules-section">
                             <h4>Средне</h4>
                             <p>Ваш персонаж находится достаточно близко к цели, чтобы видеть ее в основных деталях, например, с другого конца комнаты или соседнего рыночного прилавка. Это расстояние составляет примерно от 3 до 9 метров. Находясь в опасности, персонаж может переместиться Вплотную к любой цели, находящейся в пределах Средней дистанции, как часть своего действия.</p>
                         </div>
-                        <!-- ПРАВКА#15: Добавлено описание дистанции Далеко -->
                         <div class="rules-section">
                             <h4>Далеко</h4>
                             <p>Ваш персонаж находится достаточно далеко, чтобы видеть внешний вид цели, но не детали, например, через небольшое поле боя или в конце большого коридора. Это расстояние составляет примерно от 9 до 30 метров. Пока персонаж находится в опасности, Мастер может попросить его совершить бросок Проворности, чтобы безопасно переместиться Вплотную к любой цели, находящейся в пределах Далекой дистанции.</p>
                         </div>
-                        <!-- КОНЕЦ_ПРАВКИ -->
                     </div>
                 </div>
 
@@ -1199,19 +1332,16 @@
                             <h4>Мастерство</h4>
                             <p>Ваше мастерство определяет количество костей урона при успешной атаке.</p>
                         </div>
-                        <!-- ПРАВКА#16: Добавлено описание "Один раз за сессию" -->
                         <div class="rules-section">
                             <h4>Один раз за сессию</h4>
                             <p>Некоторые свойства говорят, что вы можете использовать их "один раз за сессию". Эти свойства не обновляются во время отдыха, но вместо этого становятся доступны в начале вашей следующей сессии Daggerheart. Если ваш стол решает играть в одну долгую сессию, Мастер может решить, что все способности "один раз за сессию" обновляются во время перерыва в игре.</p>
                         </div>
-                        <!-- КОНЕЦ_ПРАВКИ -->
                     </div>
                 </div>
 
                 <div id="rules-glossary" class="hidden">
                     <div class="rules-content">
                         <h3>📖 Глоссарий</h3>
-                        <!-- ПРАВКА#17: Добавлены все новые термины в алфавитном порядке -->
                         <div class="rules-section">
                             <h4>В</h4>
                             <p><span class="rules-link" onclick="showRulesSection('distances')">Вплотную</span></p>
@@ -1244,14 +1374,12 @@
                             <h4>С</h4>
                             <p><span class="rules-link" onclick="showRulesSection('distances')">Средне</span></p>
                         </div>
-                        <!-- КОНЕЦ_ПРАВКИ -->
                     </div>
                 </div>
 
                 <button class="button secondary" onclick="goBackFromRules()">← Назад</button>
             </div>
         </div>
-        <!-- КОНЕЦ_ПРАВКИ -->
 
         <!-- Модальное окно для родословных -->
         <div id="ancestry-modal" class="modal">
@@ -1294,7 +1422,6 @@
         var ancestryData = {
             akvan: { 
                 name: "Акван", 
-                // ПРАВКА#13: ОКОНЧАТЕЛЬНО исправляем описание Акван - заменяем заглушку
                 description: `<p><em>Акваны происходят от водных элементалей. Это гуманоиды, чьи тела состоят из плоти и воды.</em></p>
                 
                 <div class="ability-title"><strong>Источник Жизни:</strong></div>
@@ -1302,7 +1429,6 @@
                 
                 <div class="ability-title"><strong>Водный Кнут:</strong></div>
                 <p>Вы можете вытягивать воду из окружающей среды, чтобы использовать ее для атаки. Сделав это, считайте её как оружие <span class="rules-link" onclick="openRulesLink('glossary', 'iskusnost')">Искусности</span> со <span class="rules-link" onclick="openRulesLink('distances', 'sredne')">Средней</span> дистанцией, наносящее d6 магического урона, используя <span class="rules-link" onclick="openRulesLink('combat', 'masterstvo')">Мастерство</span>. Если вы находитесь в пределах <em>Близкой</em> дистанции от водоема, вы можете потратить <span class="rules-link" onclick="openRulesLink('glossary', 'nadezhda')">Надежду</span>, чтобы увеличить дистанцию атаки до <span class="rules-link" onclick="openRulesLink('distances', 'daleko')">Далёкой</span> и нанести d10 урона вместо этого.</p>`
-                // КОНЕЦ_ПРАВКИ
             },
             aeris: { 
                 name: "Аэрис", 
