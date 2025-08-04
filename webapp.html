@@ -561,9 +561,9 @@
 
         .domains-container {
             display: flex;
-            gap: 3px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 3px;
+            margin-top: 7px;
         }
 
         .domain-slot {
@@ -1580,6 +1580,9 @@
         
             // Сброс кубиков жизни на пустые
             updateLifeTrack(0);
+
+            // Сброс кубиков драмы на пустые
+            updateDramaTrack(0);
         
         }
 
@@ -1800,6 +1803,22 @@
             }
         }
 
+        // Обновление кубов драмы
+        function updateDramaTrack(filledCount) {
+            var dramaTrack = document.getElementById('drama-track');
+            var boxes = dramaTrack.querySelectorAll('.track-box');
+            
+            for (var i = 0; i < boxes.length; i++) {
+                if (i < filledCount) {
+                    boxes[i].classList.remove('empty');
+                    boxes[i].classList.add('filled');
+                } else {
+                    boxes[i].classList.remove('filled');
+                    boxes[i].classList.add('empty');
+                }
+            }
+        }
+        
         // Модальные окна
         function showClassInfo() {
             var classValue = document.getElementById('char-class').value;
