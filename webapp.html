@@ -1385,63 +1385,72 @@
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_БАРД - Замените это описание на реальное из правил Daggerheart",
                 domains: ["codex", "grace"],
                 stats: { agility: 0, strength: -1, finesse: +1, instinct: 0, presence: +2, knowledge: +1 },
-                evasion: 10
+                evasion: 10,
+                hitPoints: 5
             },
             rogue: { 
                 name: "Плут", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_ПЛУТ - Замените это описание на реальное из правил Daggerheart",
                 domains: ["grace", "midnight"], 
                 stats: { strength: -1, agility: +1, finesse: +2, instinct: +1, presence: 0, knowledge: 0 },
-                evasion: 12
+                evasion: 12,
+                hitPoints: 6
             },
             sorcerer: { 
                 name: "Чародей", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_ЧАРОДЕЙ - Замените это описание на реальное из правил Daggerheart",
                 domains: ["midnight", "arcana"], 
                 stats: { strength: -1, agility: 0, finesse: +1, instinct: +2, presence: +1, knowledge: +0 },
-                evasion: 10
+                evasion: 10,
+                hitPoints: 6
             },
             druid: { 
                 name: "Друид", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_ДРУИД - Замените это описание на реальное из правил Daggerheart",
                 domains: ["arcana", "sage"], 
                 stats: { strength: 0, agility: +1, finesse: +1, instinct: +2, presence: -1, knowledge: 0 },
-                evasion: 10
+                evasion: 10,
+                hitPoints: 6
             },
             ranger: { 
                 name: "Следопыт", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_СЛЕДОПЫТ - Замените это описание на реальное из правил Daggerheart",
                 domains: ["sage", "bone"], 
                 stats: { strength: 0, agility: +2, finesse: +1, instinct: +1, presence: -1, knowledge: 0 },
-                evasion: 12
+                evasion: 12,
+                hitPoints: 6
             },
             warrior: { 
                 name: "Воин", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_ВОИН - Замените это описание на реальное из правил Daggerheart",
                 domains: ["bone", "blade"], 
                 stats: { strength: +1, agility: +2, finesse: 0, instinct: +1, presence: -1, knowledge: 0 },
-                evasion: 11
+                evasion: 11,
+                hitPoints: 6
             },
             guardian: { 
                 name: "Страж", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_СТРАЖ - Замените это описание на реальное из правил Daggerheart",
                 domains: ["blade", "valor"], 
                 stats: { strength: +2, agility: +1, finesse: -1, instinct: 0, presence: +1, knowledge: 0 },
-                evasion: 9
+                evasion: 9,
+                hitPoints: 7
             },
             seraph: { 
                 name: "Серафим", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_СЕРАФИМ - Замените это описание на реальное из правил Daggerheart",
                 domains: ["valor", "splendor"], 
                 stats: { strength: +2, agility: 0, finesse: 0, instinct: +1, presence: +1, knowledge: -1 },
-                evasion: 9
+                evasion: 9,
+                hitPoints: 7
             },
             wizard: { 
                 name: "Волшебник", 
                 description: "ЗАГЛУШКА_ОПИСАНИЕ_ВОЛШЕБНИК - Замените это описание на реальное из правил Daggerheart",
                 domains: ["splendor", "codex"], 
                 stats: { strength: 0, agility: -1, finesse: 0, instinct: +1, presence: +1, knowledge: +2 },
-                evasion: 11
+                evasion: 11,
+                hitPoints: 5
             }
         };
 
@@ -1568,6 +1577,10 @@
             
             // Сброс портрета на заглушку
             document.getElementById('char-portrait').src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgdmlld0JveD0iMCAwIDExMCAxMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMTEiIGhlaWdodD0iMTEwIiByeD0iNTUiIGZpbGw9IiNGNUY1RjUiLz4KPHN2ZyB4PSIzMCIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI2MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyMCIgcj0iMTIiIGZpbGw9IiNERCQiLz4KICA8ZWxsaXBzZSBjeD0iMjUiIGN5PSI0NSIgcng9IjE4IiByeT0iMjAiIGZpbGw9IiNERCQiLz4KPC9zdmc+Cjwvc3ZnPg==";
+        
+            // Сброс кубиков жизни на пустые
+            updateLifeTrack(0);
+        
         }
 
         function showDiceRoll() {
@@ -1684,6 +1697,7 @@
                 var domains = classData[classValue].domains;
                 var stats = classData[classValue].stats;
                 var evasion = classData[classValue].evasion;
+                var hitPoints = classData[classValue].hitPoints;
                 
                 // Обновляем первый домен
                 var domain1Data = domainData[domains[0]];
@@ -1713,6 +1727,11 @@
                 if (evasion !== undefined) {
                     document.getElementById('evasion').textContent = evasion;
                 }
+
+                // Обновляем кубики жизни
+                if (hitPoints !== undefined) {
+                    updateLifeTrack(hitPoints);
+                }
             } else {
                 // Сбрасываем домены на заглушки
                 domain1Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
@@ -1731,6 +1750,9 @@
 
                 // Сбрасываем уклонение на 0
                 document.getElementById('evasion').textContent = 0;
+
+                // Сбрасываем кубики жизни (все пустые)
+                updateLifeTrack(0);
             }
         }
 
@@ -1760,6 +1782,22 @@
             }
             
             showMainMenu();
+        }
+
+        // Обновление кубов жизни
+        function updateLifeTrack(filledCount) {
+            var lifeTrack = document.getElementById('life-track');
+            var boxes = lifeTrack.querySelectorAll('.track-box');
+            
+            for (var i = 0; i < boxes.length; i++) {
+                if (i < filledCount) {
+                    boxes[i].classList.remove('empty');
+                    boxes[i].classList.add('filled');
+                } else {
+                    boxes[i].classList.remove('filled');
+                    boxes[i].classList.add('empty');
+                }
+            }
         }
 
         // Модальные окна
