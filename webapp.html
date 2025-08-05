@@ -1543,6 +1543,9 @@
             hideAllScreens();
             document.getElementById('character-creation').classList.remove('hidden');
             
+            // Восстанавливаем возможность редактирования
+            makeFieldsEditable();
+            
             // Сброс всех полей формы
             document.getElementById('char-name').value = '';
             document.getElementById('char-ancestry').value = '';
@@ -1567,6 +1570,10 @@
             document.getElementById('presence').value = 0;
             document.getElementById('knowledge').value = 0;
             
+            // Сброс защиты
+            document.getElementById('evasion').textContent = 0;
+            document.getElementById('armor').textContent = 0;
+            
             // Сброс доменов на заглушки
             var domain1Slot = document.getElementById('domain-1');
             var domain2Slot = document.getElementById('domain-2');
@@ -1577,13 +1584,39 @@
             
             // Сброс портрета на заглушку
             document.getElementById('char-portrait').src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgdmlld0JveD0iMCAwIDExMCAxMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMTEiIGhlaWdodD0iMTEwIiByeD0iNTUiIGZpbGw9IiNGNUY1RjUiLz4KPHN2ZyB4PSIzMCIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI2MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyMCIgcj0iMTIiIGZpbGw9IiNERCQiLz4KICA8ZWxsaXBzZSBjeD0iMjUiIGN5PSI0NSIgcng9IjE4IiByeT0iMjAiIGZpbGw9IiNERCQiLz4KPC9zdmc+Cjwvc3ZnPg==";
-        
-            // Сброс кубиков жизни на пустые
-            updateLifeTrack(0);
 
-            // Сброс кубиков драмы на пустые
+            // Сброс треков
+            updateLifeTrack(0);
             updateDramaTrack(0);
-        
+            updateHopeTrack(2); // Базовая надежда
+            
+            // Восстанавливаем оригинальные кнопки создания
+            restoreCreationButtons();
+        }
+
+        // Восстанавливает кнопки создания персонажа
+        function restoreCreationButtons() {
+            var buttonContainer = document.querySelector('#character-creation .card');
+            var existingButtons = buttonContainer.querySelectorAll('.button');
+            
+            // Удаляем все существующие кнопки
+            for (var i = existingButtons.length - 1; i >= 0; i--) {
+                existingButtons[i].remove();
+            }
+            
+            // Добавляем оригинальные кнопки
+            var saveButton = document.createElement('button');
+            saveButton.className = 'button';
+            saveButton.onclick = saveCharacter;
+            saveButton.innerHTML = '✅ Сохранить персонажа';
+            
+            var backButton = document.createElement('button');
+            backButton.className = 'button secondary';
+            backButton.onclick = showMainMenu;
+            backButton.innerHTML = '← Назад';
+            
+            buttonContainer.appendChild(saveButton);
+            buttonContainer.appendChild(backButton);
         }
 
         function showDiceRoll() {
@@ -1762,6 +1795,7 @@
         function saveCharacter() {
             var name = document.getElementById('char-name').value;
             var ancestry = document.getElementById('char-ancestry').value;
+            var background = document.getElementById('char-background').value;
             var charClass = document.getElementById('char-class').value;
 
             if (!name || !ancestry || !charClass) {
@@ -1769,21 +1803,53 @@
                 return;
             }
 
-            alert('Персонаж создан успешно!');
-            
-            // Сохраняем в локальное хранилище
-            if (typeof(Storage) !== "undefined") {
-                localStorage.setItem('daggerheart_character', JSON.stringify({
-                    name: name,
-                    ancestry: ancestry,
-                    gender: gender,
-                    class: charClass,
-                    hit_points: 20,
-                    max_hit_points: 20,
-                    stress: 0
-                }));
+            // Получаем гендер
+            var genderRadios = document.getElementsByName('gender');
+            var gender = 'male';
+            for (var i = 0; i < genderRadios.length; i++) {
+                if (genderRadios[i].checked) {
+                    gender = genderRadios[i].value;
+                    break;
+                }
             }
-            
+
+            // Получаем характеристики
+            var stats = {
+                strength: parseInt(document.getElementById('strength').value),
+                agility: parseInt(document.getElementById('agility').value),
+                finesse: parseInt(document.getElementById('finesse').value),
+                instinct: parseInt(document.getElementById('instinct').value),
+                presence: parseInt(document.getElementById('presence').value),
+                knowledge: parseInt(document.getElementById('knowledge').value)
+            };
+
+            // Получаем домены
+            var classInfo = classData[charClass];
+            var domains = classInfo ? classInfo.domains : [];
+
+            // Создаем объект персонажа
+            currentCharacter = {
+                name: name,
+                ancestry: ancestry,
+                background: background,
+                gender: gender,
+                class: charClass,
+                stats: stats,
+                domains: domains,
+                evasion: classInfo ? classInfo.evasion : 0,
+                armor: 0, // Базовая броня
+                hitPoints: classInfo ? classInfo.hitPoints : 5,
+                maxHitPoints: classInfo ? classInfo.hitPoints : 5,
+                hopeTrack: 2, // Стартовая надежда
+                dramaTrack: 6 // Стартовая драма
+            };
+
+            // Сохраняем в localStorage
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('daggerheart_character', JSON.stringify(currentCharacter));
+            }
+
+            alert('Персонаж создан успешно!');
             showMainMenu();
         }
 
@@ -2033,10 +2099,10 @@
 
             var characterInfo = document.getElementById('character-info');
             if (currentCharacter) {
-                characterInfo.innerHTML = '<strong>' + currentCharacter.name + '</strong><br>' +
-                    currentCharacter.ancestry + ' ' + currentCharacter.class + '<br>' +
-                    '💖 ' + currentCharacter.hit_points + '/' + currentCharacter.max_hit_points + ' HP<br>' +
-                    '😰 ' + currentCharacter.stress + ' Стресс';
+                characterInfo.innerHTML = 
+                    '<button class="button" onclick="showCharacterSheet()">' + 
+                    '👤 ' + currentCharacter.name + 
+                    '</button>';
             } else {
                 characterInfo.innerHTML = '<p>Персонаж не создан</p>';
             }
@@ -2046,6 +2112,187 @@
                 sceneInfo.innerHTML = '<p>' + sessionData.scene + '</p>';
             } else {
                 sceneInfo.innerHTML = '<p>Сцена не установлена</p>';
+            }
+        }
+
+        // Показать лист персонажа (только просмотр)
+        function showCharacterSheet() {
+            hideAllScreens();
+            document.getElementById('character-creation').classList.remove('hidden');
+            
+            // Заполняем все поля данными персонажа
+            document.getElementById('char-name').value = currentCharacter.name;
+            document.getElementById('char-ancestry').value = currentCharacter.ancestry;
+            document.getElementById('char-background').value = currentCharacter.background || '';
+            document.getElementById('char-class').value = currentCharacter.class;
+            
+            // Устанавливаем гендер
+            var genderRadios = document.getElementsByName('gender');
+            for (var i = 0; i < genderRadios.length; i++) {
+                genderRadios[i].checked = (genderRadios[i].value === currentCharacter.gender);
+            }
+            
+            // Заполняем характеристики
+            document.getElementById('strength').value = currentCharacter.stats.strength;
+            document.getElementById('agility').value = currentCharacter.stats.agility;
+            document.getElementById('finesse').value = currentCharacter.stats.finesse;
+            document.getElementById('instinct').value = currentCharacter.stats.instinct;
+            document.getElementById('presence').value = currentCharacter.stats.presence;
+            document.getElementById('knowledge').value = currentCharacter.stats.knowledge;
+            
+            // Устанавливаем защиту
+            document.getElementById('evasion').textContent = currentCharacter.evasion;
+            document.getElementById('armor').textContent = currentCharacter.armor;
+            
+            // Обновляем домены
+            updateDomainsDisplay();
+            
+            // Обновляем треки
+            updateLifeTrack(currentCharacter.hitPoints);
+            updateDramaTrack(currentCharacter.dramaTrack);
+            updateHopeTrack(currentCharacter.hopeTrack);
+            
+            // Обновляем портрет
+            updatePortrait();
+            
+            // Делаем все поля readonly
+            makeFieldsReadonly();
+            
+            // Меняем кнопку сохранения на кнопки управления
+            updateCharacterSheetButtons();
+        }
+
+        // Обновление отображения доменов
+        function updateDomainsDisplay() {
+            if (currentCharacter && currentCharacter.domains) {
+                var domain1Slot = document.getElementById('domain-1');
+                var domain2Slot = document.getElementById('domain-2');
+                
+                // Первый домен
+                if (currentCharacter.domains[0] && domainData[currentCharacter.domains[0]]) {
+                    var domain1Data = domainData[currentCharacter.domains[0]];
+                    domain1Slot.querySelector('.domain-icon').src = domain1Data.icon;
+                    domain1Slot.querySelector('.domain-name').textContent = domain1Data.name;
+                }
+                
+                // Второй домен
+                if (currentCharacter.domains[1] && domainData[currentCharacter.domains[1]]) {
+                    var domain2Data = domainData[currentCharacter.domains[1]];
+                    domain2Slot.querySelector('.domain-icon').src = domain2Data.icon;
+                    domain2Slot.querySelector('.domain-name').textContent = domain2Data.name;
+                }
+            }
+        }
+
+        // Обновление трека надежды
+        function updateHopeTrack(filledCount) {
+            var hopeTrack = document.getElementById('hope-track');
+            var boxes = hopeTrack.querySelectorAll('.track-box');
+            
+            for (var i = 0; i < boxes.length; i++) {
+                if (i < filledCount) {
+                    boxes[i].classList.remove('empty');
+                    boxes[i].classList.add('filled');
+                } else {
+                    boxes[i].classList.remove('filled');
+                    boxes[i].classList.add('empty');
+                }
+            }
+        }
+
+        // Делает все поля только для чтения
+        function makeFieldsReadonly() {
+            document.getElementById('char-name').readOnly = true;
+            document.getElementById('char-ancestry').disabled = true;
+            document.getElementById('char-background').disabled = true;
+            document.getElementById('char-class').disabled = true;
+            
+            var genderRadios = document.getElementsByName('gender');
+            for (var i = 0; i < genderRadios.length; i++) {
+                genderRadios[i].disabled = true;
+            }
+        }
+
+        // Восстанавливает редактирование полей
+        function makeFieldsEditable() {
+            document.getElementById('char-name').readOnly = false;
+            document.getElementById('char-ancestry').disabled = false;
+            document.getElementById('char-background').disabled = false;
+            document.getElementById('char-class').disabled = false;
+            
+            var genderRadios = document.getElementsByName('gender');
+            for (var i = 0; i < genderRadios.length; i++) {
+                genderRadios[i].disabled = false;
+            }
+        }
+
+        // Обновляет кнопки в зависимости от режима (создание/просмотр)
+        function updateCharacterSheetButtons() {
+            var buttonContainer = document.querySelector('#character-creation .card');
+            var existingButtons = buttonContainer.querySelectorAll('.button');
+            
+            // Удаляем старые кнопки
+            for (var i = existingButtons.length - 1; i >= 0; i--) {
+                existingButtons[i].remove();
+            }
+            
+            // Добавляем новые кнопки для просмотра персонажа
+            var editButton = document.createElement('button');
+            editButton.className = 'button';
+            editButton.onclick = editCharacter;
+            editButton.innerHTML = '✏️ Редактировать';
+            
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'button secondary';
+            deleteButton.onclick = deleteCharacter;
+            deleteButton.innerHTML = '🗑️ Удалить персонажа';
+            
+            var backButton = document.createElement('button');
+            backButton.className = 'button secondary';
+            backButton.onclick = showSession;
+            backButton.innerHTML = '← Назад';
+            
+            buttonContainer.appendChild(editButton);
+            buttonContainer.appendChild(deleteButton);
+            buttonContainer.appendChild(backButton);
+        }
+
+        // Функция редактирования персонажа
+        function editCharacter() {
+            makeFieldsEditable();
+            
+            // Меняем кнопки на кнопки редактирования
+            var buttonContainer = document.querySelector('#character-creation .card');
+            var existingButtons = buttonContainer.querySelectorAll('.button');
+            
+            // Удаляем старые кнопки
+            for (var i = existingButtons.length - 1; i >= 0; i--) {
+                existingButtons[i].remove();
+            }
+            
+            // Добавляем кнопки редактирования
+            var saveButton = document.createElement('button');
+            saveButton.className = 'button';
+            saveButton.onclick = saveCharacter;
+            saveButton.innerHTML = '✅ Сохранить изменения';
+            
+            var cancelButton = document.createElement('button');
+            cancelButton.className = 'button secondary';
+            cancelButton.onclick = showCharacterSheet;
+            cancelButton.innerHTML = '❌ Отменить';
+            
+            buttonContainer.appendChild(saveButton);
+            buttonContainer.appendChild(cancelButton);
+        }
+
+        // Функция удаления персонажа
+        function deleteCharacter() {
+            if (confirm('Вы уверены, что хотите удалить персонажа?')) {
+                currentCharacter = null;
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.removeItem('daggerheart_character');
+                }
+                showSession();
             }
         }
 
