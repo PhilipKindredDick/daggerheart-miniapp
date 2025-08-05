@@ -1,0 +1,12 @@
+# requirements.txt
+python-telegram-bot==20.7
+
+# start.sh (если нужен)
+#!/bin/bash
+python bot.py
+
+# .gitignore
+__pycache__/
+*.pyc
+.env
+.DS_Store
