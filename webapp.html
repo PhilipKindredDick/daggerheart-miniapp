@@ -1629,7 +1629,7 @@
                 mainWeapon: {
                     image: "images/weapons/05-13-hallowed-axe.png",
                     name: "Святой топор",
-                    damage: "d8+1 mag",
+                    damage: "d8+1 маг.",
                     type: "Одноручное",
                     range: "Вплотную",
                     trait: "-"
@@ -1637,7 +1637,7 @@
                 offWeapon: {
                     image: "images/weapons/05-50-round shield.png",
                     name: "Круглый щит",
-                    damage: "d4 phy",
+                    damage: "d4 физ.",
                     type: "Одноручное", 
                     range: "Вплотную",
                     trait: "+1 Броня",
@@ -1657,7 +1657,7 @@
                 mainWeapon: {
                     image: "images/weapons/05-16-greatstaff.png",
                     name: "Великий посох",
-                    damage: "d6 mag",
+                    damage: "d6 маг.",
                     type: "Двуручное",
                     range: "Далеко",
                     trait: "При успешной атаке бросьте дополнительный кубик урона и отбросьте кубик с наименьшим результатом."
@@ -1669,7 +1669,35 @@
                     type: "-",
                     range: "-",
                     trait: "-",
-                    isSecondHand: true // Флаг для затемнения
+                    isSecondHand: true
+                }
+            },
+            guardian: {
+                armor: {
+                    image: "images/armor/05-59-chainmail armor.png",
+                    name: "Кольчужная броня",
+                    defense: "+4 Броня",
+                    type: "Средняя",
+                    trait: "-1 Уклонение",
+                    armorBonus: 4,
+                    evasionPenalty: -1
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-15-Battleaxe.png",
+                    name: "Боевой топор",
+                    damage: "d10+3 физ.",
+                    type: "Двуручное",
+                    range: "Вплотную",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-15-Battleaxe.png",
+                    name: "Боевой топор",
+                    damage: "-",
+                    type: "-",
+                    range: "-",
+                    trait: "-",
+                    isSecondHand: true
                 }
             }
         };
