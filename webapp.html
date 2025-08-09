@@ -783,13 +783,15 @@
         }
 
         .armor-image {
-            width: 140px;
-            height: 200px; /* Соотношение 7:10 */
+            width: 100px;
+            height: 143px; /* Соотношение 7:10 */
             border-radius: 8px;
-            object-fit: cover;
+            object-fit: contain; /* Изменяем с cover на contain */
             background: var(--tg-theme-bg-color, #ffffff);
             border: 2px solid var(--tg-theme-section-separator-color, #e1e1e1);
             flex-shrink: 0;
+            padding: 4px;
+            box-sizing: border-box;
         }
 
         .weapons-section {
@@ -819,14 +821,16 @@
         }
 
         .weapon-image {
-            width: 140px;
-            height: 249px; /* Соотношение 9:16 */
+            width: 100px;
+            height: 177px; /* Соотношение 9:16 */
             border-radius: 8px;
-            object-fit: cover;
+            object-fit: contain; /* Изменяем с cover на contain */
             background: var(--tg-theme-bg-color, #ffffff);
             border: 2px solid var(--tg-theme-section-separator-color, #e1e1e1);
             margin: 0 auto 12px auto;
             display: block;
+            padding: 4px;
+            box-sizing: border-box;
         }
 
         .item-stats {
@@ -861,8 +865,7 @@
         .stat-line:first-child span {
             font-weight: bold;
             color: var(--tg-theme-text-color, #000000);
-        }       
-
+        }
     </style>
 </head>
 <body>
@@ -1323,6 +1326,7 @@
                             <div class="stat-line" id="armor-name">Название брони</div>
                             <div class="stat-line">Защита: <span id="armor-defense">0</span></div>
                             <div class="stat-line">Тип: <span id="armor-type">-</span></div>
+                            <div class="stat-line">Черта: <span id="armor-trait">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -1614,6 +1618,39 @@
             }
         };
 
+        // Данные об экипировке по классам
+        var equipmentData = {
+            seraph: {
+                armor: {
+                    image: "images/armor/05-59-chainmail armor.png",
+                    name: "Кольчужная броня",
+                    defense: "+4 Броня",
+                    type: "Средняя",
+                    trait: "-1 Уклонение",
+                    armorBonus: 4,
+                    evasionPenalty: -1
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-13-hallowed-axe.png",
+                    name: "Святой топор",
+                    damage: "d8+1 mag",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-50-round shield.png",
+                    name: "Круглый щит",
+                    damage: "d4 phy",
+                    type: "Одноручное", 
+                    range: "Вплотную",
+                    trait: "+1 Броня",
+                    armorBonus: 1
+                }
+            }
+            // Здесь будут данные для остальных классов
+        };
+
         // Данные о происхождениях
         var backgroundData = {
             noble: { 
@@ -1892,17 +1929,16 @@
             if (classValue && classData[classValue]) {
                 var domains = classData[classValue].domains;
                 var stats = classData[classValue].stats;
-                var evasion = classData[classValue].evasion;
+                var baseEvasion = classData[classValue].evasion;
                 var hitPoints = classData[classValue].hitPoints;
                 
-                // Обновляем первый домен
+                // Обновляем домены
                 var domain1Data = domainData[domains[0]];
                 if (domain1Data) {
                     domain1Slot.querySelector('.domain-icon').src = domain1Data.icon;
                     domain1Slot.querySelector('.domain-name').textContent = domain1Data.name;
                 }
 
-                // Обновляем второй домен
                 var domain2Data = domainData[domains[1]];
                 if (domain2Data) {
                     domain2Slot.querySelector('.domain-icon').src = domain2Data.icon;
@@ -1919,24 +1955,41 @@
                     document.getElementById('knowledge').value = stats.knowledge;
                 }
 
-                // Обновляем уклонение
-                if (evasion !== undefined) {
-                    document.getElementById('evasion').textContent = evasion;
+                // Рассчитываем финальную броню и уклонение с учетом экипировки
+                var finalArmor = 0; // Базовая броня
+                var finalEvasion = baseEvasion;
+                
+                var classEquipment = equipmentData[classValue];
+                if (classEquipment) {
+                    // Добавляем бонусы от брони
+                    if (classEquipment.armor && classEquipment.armor.armorBonus) {
+                        finalArmor += classEquipment.armor.armorBonus;
+                    }
+                    if (classEquipment.armor && classEquipment.armor.evasionPenalty) {
+                        finalEvasion += classEquipment.armor.evasionPenalty;
+                    }
+                    
+                    // Добавляем бонусы от вспомогательного оружия (щита)
+                    if (classEquipment.offWeapon && classEquipment.offWeapon.armorBonus) {
+                        finalArmor += classEquipment.offWeapon.armorBonus;
+                    }
                 }
+
+                // Обновляем отображение
+                document.getElementById('evasion').textContent = finalEvasion;
+                document.getElementById('armor').textContent = finalArmor;
 
                 // Обновляем кубики жизни
                 if (hitPoints !== undefined) {
                     updateLifeTrack(hitPoints);
                 }
             } else {
-                // Сбрасываем домены на заглушки
+                // Сбрасываем все на значения по умолчанию
                 domain1Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
                 domain1Slot.querySelector('.domain-name').textContent = "-";
-
                 domain2Slot.querySelector('.domain-icon').src = "images/domaines/domain-placeholder.svg";
                 domain2Slot.querySelector('.domain-name').textContent = "-";
 
-                // Сбрасываем характеристики на 0
                 document.getElementById('strength').value = 0;
                 document.getElementById('agility').value = 0;
                 document.getElementById('finesse').value = 0;
@@ -1944,10 +1997,8 @@
                 document.getElementById('presence').value = 0;
                 document.getElementById('knowledge').value = 0;
 
-                // Сбрасываем уклонение на 0
                 document.getElementById('evasion').textContent = 0;
-
-                // Сбрасываем кубики жизни (все пустые)
+                document.getElementById('armor').textContent = 0;
                 updateLifeTrack(0);
             }
         }
@@ -1963,7 +2014,6 @@
                 return;
             }
 
-            // Получаем гендер
             var genderRadios = document.getElementsByName('gender');
             var gender = 'male';
             for (var i = 0; i < genderRadios.length; i++) {
@@ -1973,7 +2023,6 @@
                 }
             }
 
-            // Получаем характеристики
             var stats = {
                 strength: parseInt(document.getElementById('strength').value),
                 agility: parseInt(document.getElementById('agility').value),
@@ -1983,11 +2032,13 @@
                 knowledge: parseInt(document.getElementById('knowledge').value)
             };
 
-            // Получаем домены
             var classInfo = classData[charClass];
             var domains = classInfo ? classInfo.domains : [];
 
-            // Создаем объект персонажа
+            // Получаем финальные значения брони и уклонения (уже рассчитанные)
+            var finalEvasion = parseInt(document.getElementById('evasion').textContent);
+            var finalArmor = parseInt(document.getElementById('armor').textContent);
+
             currentCharacter = {
                 name: name,
                 ancestry: ancestry,
@@ -1996,15 +2047,14 @@
                 class: charClass,
                 stats: stats,
                 domains: domains,
-                evasion: classInfo ? classInfo.evasion : 0,
-                armor: 0, // Базовая броня
+                evasion: finalEvasion, // Сохраняем финальное значение
+                armor: finalArmor,     // Сохраняем финальное значение
                 hitPoints: classInfo ? classInfo.hitPoints : 5,
                 maxHitPoints: classInfo ? classInfo.hitPoints : 5,
-                hopeTrack: 2, // Стартовая надежда
-                dramaTrack: 6 // Стартовая драма
+                hopeTrack: 2,
+                dramaTrack: 6
             };
 
-            // Сохраняем в localStorage
             if (typeof(Storage) !== "undefined") {
                 localStorage.setItem('daggerheart_character', JSON.stringify(currentCharacter));
             }
@@ -2121,8 +2171,78 @@
             document.getElementById('background-modal').style.display = 'none';
         }
 
-    // Система модальных пончиков
+        // Функция загрузки предметов инвентаря
+        function loadInventoryItems() {
+            if (!currentCharacter || !currentCharacter.class) {
+                clearInventoryDisplay();
+                return;
+            }
 
+            var classEquipment = equipmentData[currentCharacter.class];
+            if (!classEquipment) {
+                clearInventoryDisplay();
+                return;
+            }
+
+            // Загружаем броню
+            if (classEquipment.armor) {
+                document.getElementById('armor-image').src = classEquipment.armor.image;
+                document.getElementById('armor-name').textContent = classEquipment.armor.name;
+                document.getElementById('armor-defense').textContent = classEquipment.armor.defense;
+                document.getElementById('armor-type').textContent = classEquipment.armor.type;
+                document.getElementById('armor-trait').textContent = classEquipment.armor.trait;
+            }
+
+            // Загружаем основное оружие
+            if (classEquipment.mainWeapon) {
+                console.log('Loading main weapon:', classEquipment.mainWeapon);
+                document.getElementById('main-weapon-image').src = classEquipment.mainWeapon.image;
+                document.getElementById('main-weapon-name').textContent = classEquipment.mainWeapon.name;
+                document.getElementById('main-weapon-damage').textContent = classEquipment.mainWeapon.damage;
+                document.getElementById('main-weapon-type').textContent = classEquipment.mainWeapon.type;
+                document.getElementById('main-weapon-range').textContent = classEquipment.mainWeapon.range;
+                document.getElementById('main-weapon-trait').textContent = classEquipment.mainWeapon.trait;
+            }
+
+            // Загружаем вспомогательное оружие
+            if (classEquipment.offWeapon) {
+                console.log('Loading off weapon:', classEquipment.offWeapon);
+                document.getElementById('off-weapon-image').src = classEquipment.offWeapon.image;
+                document.getElementById('off-weapon-name').textContent = classEquipment.offWeapon.name;
+                document.getElementById('off-weapon-damage').textContent = classEquipment.offWeapon.damage;
+                document.getElementById('off-weapon-type').textContent = classEquipment.offWeapon.type;
+                document.getElementById('off-weapon-range').textContent = classEquipment.offWeapon.range;
+                document.getElementById('off-weapon-trait').textContent = classEquipment.offWeapon.trait;
+            }
+        }
+
+        // Функция очистки инвентаря
+        function clearInventoryDisplay() {
+            // Очищаем броню
+            document.getElementById('armor-image').src = "";
+            document.getElementById('armor-name').textContent = "Нет брони";
+            document.getElementById('armor-defense').textContent = "-";
+            document.getElementById('armor-type').textContent = "-";
+            document.getElementById('armor-trait').textContent = "-";
+
+            // Очищаем основное оружие
+            document.getElementById('main-weapon-image').src = "";
+            document.getElementById('main-weapon-name').textContent = "Нет оружия";
+            document.getElementById('main-weapon-damage').textContent = "-";
+            document.getElementById('main-weapon-type').textContent = "-";
+            document.getElementById('main-weapon-range').textContent = "-";
+            document.getElementById('main-weapon-trait').textContent = "-";
+
+            // Очищаем вспомогательное оружие
+            document.getElementById('off-weapon-image').src = "";
+            document.getElementById('off-weapon-name').textContent = "Нет оружия";
+            document.getElementById('off-weapon-damage').textContent = "-";
+            document.getElementById('off-weapon-type').textContent = "-";
+            document.getElementById('off-weapon-range').textContent = "-";
+            document.getElementById('off-weapon-trait').textContent = "-";
+        }        
+
+    // Система модальных пончиков
         // Функция показа уведомления о характеристиках
         function showStatsMessage() {
             var classValue = document.getElementById('char-class').value;
@@ -2466,6 +2586,7 @@
             document.getElementById('inventory').classList.remove('hidden');
             loadInventoryItems();
         }
+        
         // Инициализация
         window.addEventListener('load', function() {
             console.log('Приложение загружено');
