@@ -766,6 +766,103 @@
             border: 1px solid #333;
             border-radius: 3px;
         }
+
+    /* Стили для инвентаря */
+        .inventory-section {
+            margin-bottom: 24px;
+        }
+
+        .armor-slot {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 16px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 12px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+        }
+
+        .armor-image {
+            width: 140px;
+            height: 200px; /* Соотношение 7:10 */
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--tg-theme-bg-color, #ffffff);
+            border: 2px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            flex-shrink: 0;
+        }
+
+        .weapons-section {
+            margin-bottom: 24px;
+        }
+
+        .weapons-row {
+            display: flex;
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .weapon-slot {
+            flex: 1;
+            padding: 16px;
+            background: var(--tg-theme-section-bg-color, #f0f0f0);
+            border-radius: 12px;
+            border: 1px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            text-align: center;
+        }
+
+        .weapon-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000000);
+            margin-bottom: 8px;
+        }
+
+        .weapon-image {
+            width: 140px;
+            height: 249px; /* Соотношение 9:16 */
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--tg-theme-bg-color, #ffffff);
+            border: 2px solid var(--tg-theme-section-separator-color, #e1e1e1);
+            margin: 0 auto 12px auto;
+            display: block;
+        }
+
+        .item-stats {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stat-line {
+            font-size: 14px;
+            color: var(--tg-theme-text-color, #000000);
+            margin-bottom: 4px;
+            text-align: left;
+        }
+
+        .weapon-slot .stat-line {
+            text-align: left;
+        }
+
+        .stat-line span {
+            font-weight: 500;
+            color: var(--tg-theme-button-color, #0088cc);
+        }
+
+        /* Стиль для названий предметов */
+        .stat-line:first-child {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        .stat-line:first-child span {
+            font-weight: bold;
+            color: var(--tg-theme-text-color, #000000);
+        }       
+
     </style>
 </head>
 <body>
@@ -1110,7 +1207,7 @@
             </div>
         </div>
 
-        <!-- Добавлен экран правил с глоссарием и навигацией -->
+        <!-- Экран правил с глоссарием и навигацией -->
         <div id="rules" class="hidden">
             <div class="header">
                 <div class="title">📚 Правила</div>
@@ -1207,6 +1304,62 @@
                 </div>
 
                 <button class="button secondary" onclick="goBackFromRules()">← Назад</button>
+            </div>
+        </div>
+
+        <!-- Инвентарь -->
+        <div id="inventory" class="hidden">
+            <div class="header">
+                <div class="title">🎒 Инвентарь</div>
+            </div>
+
+            <div class="card">
+                <!-- Поле для брони -->
+                <div class="inventory-section">
+                    <label class="form-label">🛡️ Броня</label>
+                    <div class="armor-slot">
+                        <img id="armor-image" src="" alt="Броня" class="armor-image">
+                        <div class="item-stats" id="armor-stats">
+                            <div class="stat-line" id="armor-name">Название брони</div>
+                            <div class="stat-line">Защита: <span id="armor-defense">0</span></div>
+                            <div class="stat-line">Тип: <span id="armor-type">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Поля для оружия -->
+                <div class="weapons-section">
+                    <label class="form-label">⚔️ Оружие</label>
+                    <div class="weapons-row">
+                        <!-- Основная рука -->
+                        <div class="weapon-slot">
+                            <div class="weapon-label">Основная рука</div>
+                            <img id="main-weapon-image" src="" alt="Основное оружие" class="weapon-image">
+                            <div class="item-stats" id="main-weapon-stats">
+                                <div class="stat-line" id="main-weapon-name">Название оружия</div>
+                                <div class="stat-line">Урон: <span id="main-weapon-damage">-</span></div>
+                                <div class="stat-line">Тип: <span id="main-weapon-type">-</span></div>
+                                <div class="stat-line">Дист.: <span id="main-weapon-range">-</span></div>
+                                <div class="stat-line">Черта: <span id="main-weapon-trait">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Вторая рука -->
+                        <div class="weapon-slot">
+                            <div class="weapon-label">Вторая рука</div>
+                            <img id="off-weapon-image" src="" alt="Вспомогательное оружие" class="weapon-image">
+                            <div class="item-stats" id="off-weapon-stats">
+                                <div class="stat-line" id="off-weapon-name">Название оружия</div>
+                                <div class="stat-line">Урон: <span id="off-weapon-damage">-</span></div>
+                                <div class="stat-line">Тип: <span id="off-weapon-type">-</span></div>
+                                <div class="stat-line">Дист.: <span id="off-weapon-range">-</span></div>
+                                <div class="stat-line">Черта: <span id="off-weapon-trait">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="button secondary" onclick="showSession()">← Назад</button>
             </div>
         </div>
 
@@ -1701,7 +1854,7 @@
         }
 
         function hideAllScreens() {
-            var screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state', 'rules'];
+            var screens = ['main-menu', 'character-creation', 'dice-roll', 'session-state', 'rules', 'inventory'];
             for (var i = 0; i < screens.length; i++) {
                 document.getElementById(screens[i]).classList.add('hidden');
             }
@@ -2113,8 +2266,8 @@
                     '👤 ' + currentCharacter.name + 
                     '</button>';
             
-                    inventoryInfo.innerHTML = '<button class="button" onclick="showInventory()">🎒 Открыть инвентарь</button>';
-                } else {
+                inventoryInfo.innerHTML = '<button class="button" onclick="showInventory()">🎒 Открыть инвентарь</button>';
+            } else {
                 characterInfo.innerHTML = '<p>Персонаж не создан</p>';
                 inventoryInfo.innerHTML = '<p>Персонаж не создан</p>';
             }
@@ -2309,10 +2462,10 @@
         }
 
         function showInventory() {
-            // Пока заглушка - будет реализовано позже
-            alert('Инвентарь будет доступен в следующем обновлении!');
+            hideAllScreens();
+            document.getElementById('inventory').classList.remove('hidden');
+            loadInventoryItems();
         }
-
         // Инициализация
         window.addEventListener('load', function() {
             console.log('Приложение загружено');
