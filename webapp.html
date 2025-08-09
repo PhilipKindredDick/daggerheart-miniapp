@@ -866,6 +866,17 @@
             font-weight: bold;
             color: var(--tg-theme-text-color, #000000);
         }
+
+        /* Стили для курсора на изображениях брони и оружия */
+        .armor-image, .weapon-image {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .armor-image:hover, .weapon-image:hover {
+            opacity: 0.8;
+        }
+
     </style>
 </head>
 <body>
@@ -1313,11 +1324,10 @@
             </div>
 
             <div class="card">
-                <!-- Поле для брони -->
                 <div class="inventory-section">
                     <label class="form-label">🛡️ Броня</label>
                     <div class="armor-slot">
-                        <img id="armor-image" src="" alt="Броня" class="armor-image">
+                        <img id="armor-image" src="" alt="Броня" class="armor-image" onclick="showInventoryMessage()">
                         <div class="item-stats" id="armor-stats">
                             <div class="stat-line" id="armor-name">Название брони</div>
                             <div class="stat-line">Защита: <span id="armor-defense">0</span></div>
@@ -1334,7 +1344,7 @@
                         <!-- Основная рука -->
                         <div class="weapon-slot">
                             <div class="weapon-label">Основная рука</div>
-                            <img id="main-weapon-image" src="" alt="Основное оружие" class="weapon-image">
+                            <img id="main-weapon-image" src="" alt="Основное оружие" class="weapon-image" onclick="showInventoryMessage()">
                             <div class="item-stats" id="main-weapon-stats">
                                 <div class="stat-line" id="main-weapon-name">Название оружия</div>
                                 <div class="stat-line">Урон: <span id="main-weapon-damage">-</span></div>
@@ -1347,7 +1357,7 @@
                         <!-- Вторая рука -->
                         <div class="weapon-slot">
                             <div class="weapon-label">Вторая рука</div>
-                            <img id="off-weapon-image" src="" alt="Вспомогательное оружие" class="weapon-image">
+                            <img id="off-weapon-image" src="" alt="Вспомогательное оружие" class="weapon-image" onclick="showInventoryMessage()">
                             <div class="item-stats" id="off-weapon-stats">
                                 <div class="stat-line" id="off-weapon-name">Название оружия</div>
                                 <div class="stat-line">Урон: <span id="off-weapon-damage">-</span></div>
@@ -1406,11 +1416,11 @@
         <div id="stats-notification-modal" class="notification-modal">
             <div class="notification-content">
                 <div class="notification-title">
-                    🎯 Рекомендуемые характеристики
+                    🎯 Рекомендуемый выбор
                 </div>
                 <div class="notification-text">
-                    Используются рекомендуемые характеристики для выбранного класса.<br><br>
-                    Возможность изменения характеристик будет доступна за пончики <span class="donut-icon">🍩</span> в будущих обновлениях!
+                    Используются рекомендации для выбранного класса.<br><br>
+                    Возможность изменения будет доступна за пончики <span class="donut-icon">🍩</span> в будущих обновлениях!
                 </div>
                 <div class="notification-buttons">
                     <button class="notification-button primary" onclick="closeStatsNotification()">
@@ -2826,6 +2836,16 @@
             loadInventoryItems();
         }
         
+        // Функция показа уведомления об экипировке
+        function showInventoryMessage() {
+            // Обновляем текст модального окна для инвентаря
+            var modal = document.getElementById('stats-notification-modal');
+            var title = modal.querySelector('.notification-title');
+            var text = modal.querySelector('.notification-text');
+
+            modal.style.display = 'block';
+        }
+
         // Инициализация
         window.addEventListener('load', function() {
             console.log('Приложение загружено');
