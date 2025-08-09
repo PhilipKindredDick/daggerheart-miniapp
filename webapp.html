@@ -1624,7 +1624,7 @@
                     type: "Средняя",
                     trait: "-1 Уклонение",
                     armorBonus: 4,
-                    evasionPenalty: -1
+                    evasionBonus: -1
                 },
                 mainWeapon: {
                     image: "images/weapons/05-13-hallowed-axe.png",
@@ -1652,7 +1652,7 @@
                     type: "Легкая",
                     trait: "-",
                     armorBonus: 3,
-                    evasionPenalty: 0
+                    evasionBonus: 0
                 },
                 mainWeapon: {
                     image: "images/weapons/05-16-greatstaff.png",
@@ -1680,7 +1680,7 @@
                     type: "Средняя",
                     trait: "-1 Уклонение",
                     armorBonus: 4,
-                    evasionPenalty: -1
+                    evasionBonus: -1
                 },
                 mainWeapon: {
                     image: "images/weapons/05-15-Battleaxe.png",
@@ -1699,8 +1699,175 @@
                     trait: "-",
                     isSecondHand: true
                 }
+            },
+            warrior: {
+                armor: {
+                    image: "images/armor/05-59-chainmail armor.png",
+                    name: "Кольчужная броня",
+                    defense: "+4 Броня",
+                    type: "Средняя",
+                    trait: "-1 Уклонение",
+                    armorBonus: 4,
+                    evasionBonus: -1
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-05-longsword.png",
+                    name: "Длинный меч",
+                    damage: "d8+3 физ.",
+                    type: "Двуручное",
+                    range: "Вплотную",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-05-longsword.png",
+                    name: "Длинный меч",
+                    damage: "-",
+                    type: "-",
+                    range: "-",
+                    trait: "-",
+                    isSecondHand: true
+                }
+            },
+            ranger: {
+                armor: {
+                    image: "images/armor/05-58-leather armor.png",
+                    name: "Кожаные доспехи",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "-",
+                    armorBonus: 3,
+                    evasionBonus: 0
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-17-longbow.png",
+                    name: "Длинный лук", 
+                    damage: "d6+3 физ.",
+                    type: "Двуручное",
+                    range: "Далеко",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-17-longbow.png",
+                    name: "Длинный лук", 
+                    damage: "-",
+                    type: "-",
+                    range: "-",
+                    trait: "-",
+                    isSecondHand: true
+                }
+            },
+            druid: {
+                armor: {
+                    image: "images/armor/05-58-leather armor.png",
+                    name: "Кожаные доспехи",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "-",
+                    armorBonus: 3,
+                    evasionBonus: 0
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-19-shortstaff.png",
+                    name: "Короткий посох",
+                    damage: "d8+1 физ.",
+                    type: "Одноручное",
+                    range: "Близко",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-50-round shield.png",
+                    name: "Круглый щит",
+                    damage: "d4 физ.",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "+1 Броня",
+                    armorBonus: 1
+                }
+            },
+            sorcerer: {
+                armor: {
+                    image: "images/armor/05-57-gambeson armor.png",
+                    name: "Гамбезон",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "+1 Уклонение",
+                    armorBonus: 3,
+                    evasionBonus: 1 
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-18-dualstaff.png",
+                    name: "Дуальный посох",
+                    damage: "d6+3 маг.",
+                    type: "Двуручное",
+                    range: "Далеко",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-18-dualstaff.png",
+                    name: "Дуальный посох",
+                    damage: "-",
+                    type: "-",
+                    range: "-",
+                    trait: "-",
+                    isSecondHand: true
+                }
+            },
+            rogue: {
+                armor: {
+                    image: "images/armor/05-57-gambeson armor.png",
+                    name: "Гамбезон",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "+1 Уклонение",
+                    armorBonus: 3,
+                    evasionPenalty: 0,
+                    evasionBonus: 1
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-09-dagger.png",
+                    name: "Кинжал",
+                    damage: "d8+1 физ.",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "-"
+                },
+                offWeapon: {
+                    image: "images/weapons/05-45-small dagger.png",
+                    name: "Малый кинжал",
+                    damage: "+2 физ.",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "-"
+                }
+            },
+            bard: {
+                armor: {
+                    image: "images/armor/05-57-gambeson armor.png",
+                    name: "Гамбезон",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "+1 Уклонение",
+                    armorBonus: 3,
+                    evasionBonus: 1
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-03-rapier.png",
+                    name: "Рапира",
+                    damage: "d8 физ.",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "Когда вы совершаете атаку, вы можете отметить Драму, чтобы поразить еще одно существо в пределах досягаемости."
+                },
+                offWeapon: {
+                    image: "images/weapons/05-45-small dagger.png",
+                    name: "Малый кинжал",
+                    damage: "+2 физ.",
+                    type: "Одноручное",
+                    range: "Вплотную",
+                    trait: "-"
+                }
             }
-        };
+};
 
         // Данные о происхождениях
         var backgroundData = {
@@ -2016,8 +2183,8 @@
                     if (classEquipment.armor && classEquipment.armor.armorBonus) {
                         finalArmor += classEquipment.armor.armorBonus;
                     }
-                    if (classEquipment.armor && classEquipment.armor.evasionPenalty) {
-                        finalEvasion += classEquipment.armor.evasionPenalty;
+                    if (classEquipment.armor && classEquipment.armor.evasionBonus) {
+                        finalEvasion += classEquipment.armor.evasionBonus;
                     }
                     
                     // Добавляем бонусы от вспомогательного оружия (щита)
