@@ -718,10 +718,6 @@
             background-color: #ffffff;
         }
 
- /*        .track-fields-row .track-group .form-label {
-            text-align: center;
-        } */
-
     /* Стили для надежды */
         .hope-defense-container {
             display: flex;
@@ -831,6 +827,10 @@
             display: block;
             padding: 4px;
             box-sizing: border-box;
+        }
+
+        .weapon-image.second-hand {
+            opacity: 0.25; /* Делаем картинку бледнее */
         }
 
         .item-stats {
@@ -1180,10 +1180,6 @@
             </div>
 
             <div class="card">
-                <div class="form-group">
-                    <label class="form-label">💀 Страх: <span id="session-fear">0</span></label>
-                    <label class="form-label">✨ Надежда: <span id="session-hope">0</span></label>
-                </div>
 
                 <div class="form-group">
                     <label class="form-label">👤 Мой персонаж</label>
@@ -1647,8 +1643,35 @@
                     trait: "+1 Броня",
                     armorBonus: 1
                 }
+            },
+            wizard: {
+                armor: {
+                    image: "images/armor/05-58-leather armor.png",
+                    name: "Кожаные доспехи",
+                    defense: "+3 Броня",
+                    type: "Легкая",
+                    trait: "-",
+                    armorBonus: 3,
+                    evasionPenalty: 0
+                },
+                mainWeapon: {
+                    image: "images/weapons/05-16-greatstaff.png",
+                    name: "Великий посох",
+                    damage: "d6 mag",
+                    type: "Двуручное",
+                    range: "Далеко",
+                    trait: "При успешной атаке бросьте дополнительный кубик урона и отбросьте кубик с наименьшим результатом."
+                },
+                offWeapon: {
+                    image: "images/weapons/05-16-greatstaff.png",
+                    name: "Великий посох",
+                    damage: "-",
+                    type: "-",
+                    range: "-",
+                    trait: "-",
+                    isSecondHand: true // Флаг для затемнения
+                }
             }
-            // Здесь будут данные для остальных классов
         };
 
         // Данные о происхождениях
@@ -2052,7 +2075,7 @@
                 hitPoints: classInfo ? classInfo.hitPoints : 5,
                 maxHitPoints: classInfo ? classInfo.hitPoints : 5,
                 hopeTrack: 2,
-                dramaTrack: 6
+                dramaTrack: 0
             };
 
             if (typeof(Storage) !== "undefined") {
@@ -2173,6 +2196,7 @@
 
         // Функция загрузки предметов инвентаря
         function loadInventoryItems() {
+            
             if (!currentCharacter || !currentCharacter.class) {
                 clearInventoryDisplay();
                 return;
@@ -2207,7 +2231,16 @@
             // Загружаем вспомогательное оружие
             if (classEquipment.offWeapon) {
                 console.log('Loading off weapon:', classEquipment.offWeapon);
-                document.getElementById('off-weapon-image').src = classEquipment.offWeapon.image;
+                var offWeaponImg = document.getElementById('off-weapon-image');
+                offWeaponImg.src = classEquipment.offWeapon.image;
+                
+                // Добавляем класс для затемнения, если это вторая рука двуручного оружия
+                if (classEquipment.offWeapon.isSecondHand) {
+                    offWeaponImg.classList.add('second-hand');
+                } else {
+                    offWeaponImg.classList.remove('second-hand');
+                }
+                
                 document.getElementById('off-weapon-name').textContent = classEquipment.offWeapon.name;
                 document.getElementById('off-weapon-damage').textContent = classEquipment.offWeapon.damage;
                 document.getElementById('off-weapon-type').textContent = classEquipment.offWeapon.type;
@@ -2374,8 +2407,6 @@
         }
 
         function updateSessionDisplay() {
-            document.getElementById('session-fear').textContent = sessionData.fear;
-            document.getElementById('session-hope').textContent = sessionData.hope;
 
             var characterInfo = document.getElementById('character-info');
             var inventoryInfo = document.getElementById('inventory-info');
@@ -2387,6 +2418,19 @@
                     '</button>';
             
                 inventoryInfo.innerHTML = '<button class="button" onclick="showInventory()">🎒 Открыть инвентарь</button>';
+       
+       // кнопка удаления сразу в меню
+       //   if (currentCharacter) {
+       //       characterInfo.innerHTML = 
+       //          '<button class="button" onclick="showCharacterSheet()">' + 
+       //           '👤 ' + currentCharacter.name + 
+       //           '</button>' +
+       //           '<button class="button secondary" onclick="deleteCharacter()" style="margin-top: 8px;">' +
+       //           '🗑️ Удалить персонажа' +
+       //           '</button>';
+
+       //        inventoryInfo.innerHTML = '<button class="button" onclick="showInventory()">🎒 Открыть инвентарь</button>';
+                
             } else {
                 characterInfo.innerHTML = '<p>Персонаж не создан</p>';
                 inventoryInfo.innerHTML = '<p>Персонаж не создан</p>';
