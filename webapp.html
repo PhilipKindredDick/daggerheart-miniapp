@@ -889,15 +889,18 @@
             </div>
 
             <div class="card">
+                <button class="button secondary" id="game-button" onclick="startGame()">
+                    🎮 ИГРА
+                </button>
                 <button class="button" onclick="showCharacterCreation()">
                     🎭 Создать персонажа
                 </button>
-                <button class="button" onclick="showDiceRoll()">
-                    🎲 Бросить кубики
-                </button>
-                <button class="button secondary" onclick="showSession()">
-                    📊 Состояние сессии
-                </button>
+            <button class="button secondary" id="session-button" onclick="showSession()">
+                📊 Состояние сессии
+            </button>
+            <button class="button secondary" onclick="showDiceRoll()">
+                🎲 Бросить кубики
+            </button>
                 <button class="button secondary" onclick="showRules()">
                     📚 Правила
                 </button>
@@ -1133,6 +1136,39 @@
             </div>
         </div>
 
+    <!-- Состояние сессии -->
+        <div id="session-state" class="hidden">
+            <div class="header">
+                <div class="title">📊 Состояние сессии</div>
+            </div>
+
+            <div class="card">
+
+                <div class="form-group">
+                    <label class="form-label">👤 Мой персонаж</label>
+                    <div id="character-info">
+                        <p>Персонаж не создан</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🎒 Инвентарь</label>
+                    <div id="inventory-info">
+                        <p>Персонаж не создан</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🌍 Текущая сцена</label>
+                    <div id="current-scene">
+                        <p>Сцена не установлена</p>
+                    </div>
+                </div>
+
+                <button class="button secondary" onclick="showMainMenu()">← Назад</button>
+            </div>
+        </div>
+
         <!-- Бросок кубиков -->
         <div id="dice-roll" class="hidden">
             <div class="header">
@@ -1182,38 +1218,6 @@
                 <button class="button secondary" onclick="showMainMenu()">
                     ← Назад
                 </button>
-            </div>
-        </div>
-
-        <div id="session-state" class="hidden">
-            <div class="header">
-                <div class="title">📊 Состояние сессии</div>
-            </div>
-
-            <div class="card">
-
-                <div class="form-group">
-                    <label class="form-label">👤 Мой персонаж</label>
-                    <div id="character-info">
-                        <p>Персонаж не создан</p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">🎒 Инвентарь</label>
-                    <div id="inventory-info">
-                        <p>Персонаж не создан</p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">🌍 Текущая сцена</label>
-                    <div id="current-scene">
-                        <p>Сцена не установлена</p>
-                    </div>
-                </div>
-
-                <button class="button secondary" onclick="showMainMenu()">← Назад</button>
             </div>
         </div>
 
@@ -1373,6 +1377,72 @@
             </div>
         </div>
 
+        <!-- Игровой экран -->
+        <div id="game-screen" class="hidden">
+            <div class="header">
+                <div class="title">🎮 Daggerheart</div>
+                <div class="subtitle" id="scene-location">Локация не установлена</div>
+            </div>
+
+            <div class="card">
+                <!-- Область истории игры -->
+                <div id="game-log" class="game-log">
+                    <div class="gm-message">
+                        <strong>ГМ:</strong> Добро пожаловать в мир Daggerheart! Игра начинается...
+                    </div>
+                </div>
+
+                <!-- Предложения ходов от ГМ -->
+                <div id="action-suggestions" class="action-suggestions hidden">
+                    <label class="form-label">Предлагаемые действия:</label>
+                    <div id="suggestions-list"></div>
+                </div>
+
+                <!-- Поле ввода действий игрока -->
+                <div class="form-group">
+                    <label class="form-label">Ваше действие:</label>
+                    <textarea class="form-input" id="player-action" placeholder="Опишите что вы хотите сделать..." rows="3"></textarea>
+                    <button class="button" onclick="sendPlayerAction()" id="send-action-btn">
+                        📤 Отправить действие
+                    </button>
+                </div>
+
+                <!-- Панель быстрых бросков -->
+                <div class="quick-rolls">
+                    <label class="form-label">Быстрые броски:</label>
+                    <div class="rolls-row">
+                        <button class="button secondary small" onclick="quickRoll('strength')">💪 Сила</button>
+                        <button class="button secondary small" onclick="quickRoll('agility')">🏃 Ловкость</button>
+                        <button class="button secondary small" onclick="quickRoll('finesse')">🎯 Грация</button>
+                        <button class="button secondary small" onclick="quickRoll('instinct')">🧠 Интуиция</button>
+                        <button class="button secondary small" onclick="quickRoll('presence')">✨ Харизма</button>
+                        <button class="button secondary small" onclick="quickRoll('knowledge')">📚 Интеллект</button>
+                    </div>
+                </div>
+
+                <!-- Панель состояния персонажа -->
+                <div class="character-status">
+                    <div class="status-row">
+                        <div class="status-item">
+                            <span class="status-label">❤️ Жизнь:</span>
+                            <span id="current-hp">6</span>/<span id="max-hp">6</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">🎭 Драма:</span>
+                            <span id="current-drama">0</span>/12
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">✨ Надежда:</span>
+                            <span id="current-hope">2</span>/6
+                        </div>
+                    </div>
+                </div>
+
+                <button class="button secondary" onclick="pauseGame()">⏸️ Пауза</button>
+                <button class="button secondary" onclick="endGame()">🚪 Завершить игру</button>
+            </div>
+        </div>
+
         <!-- Модальное окно для родословных -->
         <div id="ancestry-modal" class="modal">
             <div class="modal-content">
@@ -1433,6 +1503,9 @@
     </div>
 
     <script>
+        // Конфигурация API
+        const API_BASE_URL = 'http://192.168.0.224:5000';
+
         // Глобальные переменные
         var currentCharacter = null;
         var sessionData = {
@@ -1440,6 +1513,13 @@
             hope: 0,
             scene: '',
             players: []
+        };
+
+        // Состояние игры
+        var gameState = {
+            scene: 'Начало приключения',
+            location: 'Таверна "Золотой дракон"',
+            log: []
         };
 
         // Данные о родословных (заглушки для описаний)
@@ -1962,6 +2042,17 @@
         function showMainMenu() {
             hideAllScreens();
             document.getElementById('main-menu').classList.remove('hidden');
+            
+            // Загружаем персонажа если есть
+            if (typeof(Storage) !== "undefined") {
+                var savedCharacter = localStorage.getItem('daggerheart_character');
+                if (savedCharacter) {
+                    currentCharacter = JSON.parse(savedCharacter);
+                }
+            }
+            
+            // Обновляем состояние кнопки игры
+            updateMenuButtons();
         }
 
         function showCharacterCreation() {
@@ -2289,6 +2380,7 @@
 
             alert('Персонаж создан успешно!');
             showMainMenu();
+            updateMenuButtons(); 
         }
 
         // Обновление кубов жизни
@@ -2826,6 +2918,7 @@
                 if (typeof(Storage) !== "undefined") {
                     localStorage.removeItem('daggerheart_character');
                 }
+                updateMenuButtons();
                 showSession();
             }
         }
@@ -2846,6 +2939,281 @@
             modal.style.display = 'block';
         }
 
+        // Функция проверки наличия персонажа и обновления кнопки игры
+        function updateMenuButtons() {
+            var gameButton = document.getElementById('game-button');
+            var sessionButton = document.getElementById('session-button');
+            
+            if (currentCharacter) {
+                // Персонаж создан - активируем обе кнопки
+                gameButton.className = 'button';
+                gameButton.disabled = false;
+                sessionButton.className = 'button';
+                sessionButton.disabled = false;
+            } else {
+                // Персонажа нет - делаем кнопки неактивными
+                gameButton.className = 'button secondary';
+                gameButton.disabled = false; // Оставляем кликабельной для показа сообщения
+                sessionButton.className = 'button secondary';
+                sessionButton.disabled = false; // Оставляем кликабельной для показа сообщения
+            }
+        }
+
+        async function startGame() {
+            if (!currentCharacter) {
+                alert('Для начала игры создайте персонажа');
+                return;
+            }
+            
+            hideAllScreens();
+            document.getElementById('game-screen').classList.remove('hidden');
+            
+            // Инициализируем игру
+            await initializeGame();
+        }
+
+        async function initializeGame() {
+            addToGameLog('system', 'Подключение к ИИ гейм-мастеру...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/gm_action`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'Начать новую игру',
+                        character: currentCharacter,
+                        game_state: gameState
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateGameScreen(result.data);
+                    addToGameLog('system', '✅ Соединение с ГМ установлено');
+                } else {
+                    addToGameLog('system', `❌ Ошибка ГМ: ${result.error}`);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка инициализации:', error);
+                addToGameLog('system', '❌ Не удалось подключиться к серверу ГМ');
+            }
+        }
+
+        async function sendPlayerAction() {
+            const actionText = document.getElementById('player-action').value.trim();
+            if (!actionText) return;
+            
+            // Блокируем кнопку во время обработки
+            const sendBtn = document.getElementById('send-action-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = '⏳ Обработка...';
+            
+            // Добавляем действие в лог
+            addToGameLog('player', actionText);
+            document.getElementById('player-action').value = '';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/gm_action`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: actionText,
+                        character: currentCharacter,
+                        game_state: gameState
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateGameScreen(result.data);
+                    
+                    // Если нужен бросок, запрашиваем его
+                    if (result.data.requires_roll) {
+                        await handleSkillCheck(result.data.requires_roll);
+                    }
+                } else {
+                    addToGameLog('system', `❌ Ошибка ГМ: ${result.error}`);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка отправки действия:', error);
+                addToGameLog('system', '❌ Ошибка связи с ГМ');
+            } finally {
+                // Разблокируем кнопку
+                sendBtn.disabled = false;
+                sendBtn.textContent = '📤 Отправить действие';
+            }
+        }
+
+        async function handleSkillCheck(rollData) {
+            const trait = rollData.trait;
+            const difficulty = rollData.difficulty;
+            const reason = rollData.reason;
+            
+            addToGameLog('system', `🎲 Требуется проверка ${trait} (сложность ${difficulty}): ${reason}`);
+            
+            // Получаем модификатор характеристики
+            const traitModifier = currentCharacter.stats[trait] || 0;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/roll_dice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        trait_modifier: traitModifier
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayDiceResult(result.data, difficulty);
+                } else {
+                    addToGameLog('system', '❌ Ошибка броска кубиков');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка броска:', error);
+                addToGameLog('system', '❌ Ошибка системы бросков');
+            }
+        }
+
+        function displayDiceResult(rollData, difficulty) {
+            const { hope_dice, fear_dice, modifier, total, is_critical, dominant_die } = rollData;
+            
+            let resultText = `🎲 Результат: Надежда ${hope_dice}, Страх ${fear_dice}`;
+            if (modifier !== 0) {
+                resultText += ` + ${modifier} = ${total}`;
+            }
+            
+            let outcome;
+            if (is_critical) {
+                outcome = '🌟 КРИТИЧЕСКИЙ УСПЕХ!';
+            } else if (total >= difficulty) {
+                outcome = dominant_die === 'hope' ? 
+                    '✅ Успех с Надеждой!' : 
+                    '✅ Успех со Страхом';
+            } else {
+                outcome = '❌ Неудача';
+            }
+            
+            addToGameLog('system', `${resultText}\n${outcome}`);
+        }
+
+        function updateGameScreen(gmData) {
+            // Обновляем описание сцены
+            if (gmData.scene_description) {
+                addToGameLog('gm', gmData.scene_description);
+                gameState.scene = gmData.scene_description;
+            }
+            
+            // Обновляем локацию
+            if (gmData.location) {
+                document.getElementById('scene-location').textContent = gmData.location;
+                gameState.location = gmData.location;
+            }
+            
+            // Обновляем предложения действий
+            if (gmData.action_suggestions) {
+                updateActionSuggestions(gmData.action_suggestions);
+            }
+        }
+
+        function updateActionSuggestions(suggestions) {
+            const container = document.getElementById('suggestions-list');
+            container.innerHTML = '';
+            
+            suggestions.forEach(suggestion => {
+                const button = document.createElement('button');
+                button.className = 'button secondary';
+                button.style.marginBottom = '4px';
+                button.textContent = suggestion;
+                button.onclick = () => {
+                    document.getElementById('player-action').value = suggestion;
+                };
+                container.appendChild(button);
+            });
+            
+            document.getElementById('action-suggestions').classList.remove('hidden');
+        }
+
+        function addToGameLog(type, content) {
+            const gameLog = document.getElementById('game-log');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `${type}-message`;
+            
+            const prefixes = {
+                'gm': '🎭 ГМ:',
+                'player': '👤 Вы:',
+                'system': '⚙️ Система:'
+            };
+            
+            messageDiv.innerHTML = `<strong>${prefixes[type]}</strong> ${content.replace(/\n/g, '<br>')}`;
+            
+            gameLog.appendChild(messageDiv);
+            gameLog.scrollTop = gameLog.scrollHeight;
+            
+            // Сохраняем в состояние игры
+            gameState.log.push({type, content, timestamp: Date.now()});
+        }
+
+        async function quickRoll(trait) {
+            if (!currentCharacter) return;
+            
+            const traitModifier = currentCharacter.stats[trait] || 0;
+            const traitNames = {
+                'strength': 'Сила',
+                'agility': 'Ловкость', 
+                'finesse': 'Грация',
+                'instinct': 'Интуиция',
+                'presence': 'Харизма',
+                'knowledge': 'Интеллект'
+            };
+            
+            addToGameLog('player', `Бросаю проверку ${traitNames[trait]}`);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/roll_dice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        trait_modifier: traitModifier
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const { hope_dice, fear_dice, modifier, total } = result.data;
+                    addToGameLog('system', `🎲 ${traitNames[trait]}: Надежда ${hope_dice}, Страх ${fear_dice} + ${modifier} = ${total}`);
+                }
+                
+            } catch (error) {
+                addToGameLog('system', '❌ Ошибка броска');
+            }
+        }
+
+        function pauseGame() {
+            addToGameLog('system', '⏸️ Игра приостановлена');
+        }
+
+        function endGame() {
+            if (confirm('Завершить игру?')) {
+                showMainMenu();
+            }
+        }
+        
         // Инициализация
         window.addEventListener('load', function() {
             console.log('Приложение загружено');
