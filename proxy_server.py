@@ -7,7 +7,21 @@ import os
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["https://username.github.io", "https://web.telegram.org", "*"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
