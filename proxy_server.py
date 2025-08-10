@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import requests
 import json
 import random
@@ -8,25 +7,27 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Простой CORS для всех
-CORS(app)
-
-# Обработчик preflight запросов
+# Убираем flask_cors полностью и делаем вручную
 @app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
+def before_request():
+    if request.method == 'OPTIONS':
         response = jsonify()
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add('Access-Control-Allow-Headers', "*")
-        response.headers.add('Access-Control-Allow-Methods', "*")
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
         return response
 
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
+
+# Тест endpoint для проверки CORS
+@app.route('/api/test', methods=['GET', 'POST', 'OPTIONS'])
+def test():
+    return jsonify({"status": "OK", "message": "CORS работает!"})
 
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
