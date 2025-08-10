@@ -7,7 +7,7 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-DEEPSEEK_API_KEY = "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"  # Замените на ваш ключ
+DEEPSEEK_API_KEY = "---"  # Замените на ваш ключ
 DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
 
 @app.route('/api/gm_action', methods=['POST'])
