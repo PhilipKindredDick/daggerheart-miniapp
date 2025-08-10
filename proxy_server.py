@@ -35,6 +35,14 @@ DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
 
 @app.route('/api/gm_action', methods=['POST', 'OPTIONS'])
 def gm_action():
+    # Явно обрабатываем OPTIONS
+    if request.method == 'OPTIONS':
+        response = jsonify()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
     try:
         data = request.json
         action = data.get('action', '')
@@ -62,77 +70,25 @@ def gm_action():
 
 Ответь ТОЛЬКО JSON."""
 
-        # Запрос к DeepSeek
-        headers = {
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
-            "Content-Type": "application/json"
+        # Заглушка для тестирования CORS
+        test_response = {
+            "scene_description": "Тестовая сцена для проверки связи с ГМ. Ваш персонаж стоит в начале приключения.",
+            "action_suggestions": ["Осмотреться вокруг", "Поговорить с НПС", "Пойти вперед"],
+            "requires_roll": None,
+            "location": "Тестовая локация",
+            "atmosphere": "спокойная"
         }
 
-        payload = {
-            "model": "deepseek-chat",
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            "max_tokens": 600,
-            "temperature": 0.7
-        }
-
-        response = requests.post(DEEPSEEK_URL, headers=headers, json=payload, timeout=30)
-
-        if response.status_code == 200:
-            ai_response = response.json()
-            gm_text = ai_response['choices'][0]['message']['content'].strip()
-
-            # Убираем возможные markdown блоки
-            if gm_text.startswith('```json'):
-                gm_text = gm_text[7:]
-            if gm_text.startswith('```'):
-                gm_text = gm_text[3:]
-            if gm_text.endswith('```'):
-                gm_text = gm_text[:-3]
-
-            gm_text = gm_text.strip()
-
-            # Парсим JSON ответ ИИ
-            try:
-                gm_data = json.loads(gm_text)
-
-                # Исправляем trait если нужно
-                if gm_data.get('requires_roll') and 'trait' in gm_data['requires_roll']:
-                    trait = gm_data['requires_roll']['trait']
-                    # Конвертируем dexterity в agility и другие
-                    trait_mapping = {
-                        'dexterity': 'agility',
-                        'intelligence': 'knowledge',
-                        'charisma': 'presence',
-                        'wisdom': 'instinct'
-                    }
-                    if trait in trait_mapping:
-                        gm_data['requires_roll']['trait'] = trait_mapping[trait]
-
-                return jsonify({"success": True, "data": gm_data})
-
-            except json.JSONDecodeError as e:
-                print(f"JSON parse error: {e}")
-                print(f"Raw response: {gm_text}")
-                # Fallback
-                return jsonify({
-                    "success": True,
-                    "data": {
-                        "scene_description": gm_text,
-                        "action_suggestions": ["Продолжить", "Осмотреться", "Поговорить"],
-                        "requires_roll": None,
-                        "location": "Неизвестная локация",
-                        "atmosphere": "загадочная"
-                    }
-                })
-        else:
-            return jsonify({"success": False, "error": f"DeepSeek API error: {response.status_code}"})
+        response = jsonify({"success": True, "data": test_response})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
 
     except Exception as e:
-        print(f"Error in gm_action: {e}")
-        return jsonify({"success": False, "error": str(e)})
+        response = jsonify({"success": False, "error": str(e)})
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
 @app.route('/api/roll_dice', methods=['POST'])
 def roll_dice():
