@@ -1,7 +1,7 @@
 import requests
 
 url = "https://api.deepseek.com/v1/chat/completions"
-api_key = "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"
+api_key = "sk-078082efd18d4fcfab12318843b36c58"
 
 headers = {
     "Authorization": f"Bearer {api_key}",
