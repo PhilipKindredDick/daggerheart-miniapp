@@ -33,7 +33,7 @@ DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
 
 
-@app.route('/api/gm_action', methods=['POST'])
+@app.route('/api/gm_action', methods=['POST', 'OPTIONS'])
 def gm_action():
     try:
         data = request.json
@@ -173,7 +173,12 @@ load_dotenv()
 
 print("Переменная загружена:", os.getenv('DEEPSEEK_API_KEY'))
 
-DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
+@app.route('/api/endpoints', methods=['GET'])
+def list_endpoints():
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append(str(rule))
+    return jsonify({"endpoints": routes})
 
 if not DEEPSEEK_API_KEY:
     raise ValueError("DEEPSEEK_API_KEY не найден в переменных окружения")
